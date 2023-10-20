@@ -1,0 +1,44 @@
+# Nombre del proceso
+name: Despliegue inicial
+# Eventos que desencadenan el flujo de trabajo
+on:
+  # Para ejecutar manualmente el proceso
+  workflow_dispatch:
+  # Cuando se hace push a la rama main-m9
+  push:
+    branches:
+      - main-m9
+# Definición de trabajos
+jobs:
+  build:
+    name: Construyendo y desplegando aplicación
+    # Se ejecuta en el sistema operativo 'Ubuntu'
+    runs-on: ubuntu-latest
+    steps:
+      # Paso 1: Clona el repositorio
+      - uses: actions/checkout@v1
+      # Paso 2: Configurando JDK 17
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: "17"
+      # Paso 3: Configurando cache de Maven
+      - name: Cache Maven packages
+        # Para mejorar el tiempo de ejecución, se guarda en caché las dependencias de Maven
+        uses: actions/cache@v1
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+      # Paso 4: Construye la aplicación con Maven
+      - name: Build with Maven
+        run: mvn -B package -DskipTests --file pom.xml
+      # Paso 5: Sube el JAR como artefacto
+      - name: Upload JAR
+        # Esto sube artefactos desde tu flujo de trabajo, permitiéndote compartir datos entre trabajos y almacenar datos una vez que el flujo de trabajo está completo.
+        uses: actions/upload-artifact@v2
+        with:
+          # Nombre del artefacto
+          name: artifact
+          # Desde esta ruta
+          path: target/lab2-0.0.1-SNAPSHOT.jar

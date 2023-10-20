@@ -13,7 +13,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "strategy")
+@Table(name = "estrategia")
 public class Strategy {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,7 +34,7 @@ public class Strategy {
     private String code;
 
     @NotNull
-    @Column(name = "discount_percentage")
+    @Column(name = "porcentaje_descuento")
     private int discountPercentage;
 
     @NotNull
