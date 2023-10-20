@@ -1,0 +1,20 @@
+{
+  "base_cupones": "http://api:3000/coupons",
+  "base_promociones": "http://api:3000/discounts",
+
+  "cupones": {
+    "POST": "http://api:3000/coupons/create",
+    "GET": "http://api:3000/coupons/all?limit=10&offset=0",
+    "GET:id": "http://api:3000/coupons/:id",
+    "PATCH:id": "http://api:3000/coupons/edit/:id",
+    "DELETE:id": "http://api:3000/coupons/delete/:id"
+  },
+
+  "promociones": {
+    "POST": "http://api:3000/discounts/create",
+    "GET": "http://api:3000/discounts/all",
+    "GET:id": "http://api:3000/discounts/:id",
+    "PATCH:id": "http://api:3000/discounts/edit/:id",
+    "DELETE:id": "http://api:3000/discounts/delete/:id"
+  }
+}
