@@ -1,9 +1,7 @@
 package co.udea.ssmu.api.model.jpa.dto;
 
 import java.time.LocalDate;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
-
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
@@ -29,7 +27,7 @@ public class StrategyDTO {
     private int discountValue;
     private int minValue;
     private int maxDiscount;
-    private Boolean estado;
+    private Boolean isActive;
     @NotEmpty(message = "Falta la ciudad")
     private String city;
 
@@ -39,19 +37,19 @@ public class StrategyDTO {
     }
 
     // Getter y Setter
-    public Boolean getEstado() {
-        return estado;
+    public Boolean getIsActive() {
+        return isActive;
     }
 
-    public void setEstado(Boolean estado) {
-        this.estado = estado;
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
     }
 
-    public String getCiudad() {
+    public String getCity() {
         return city;
     }
 
-    public void setCiudad(String city) {
+    public void setCity(String city) {
         this.city = city;
     }
 
@@ -103,11 +101,11 @@ public class StrategyDTO {
         this.name = name;
     }
 
-    public int getIdEstrategy() {
+    public int getIdStrategy() {
         return idStrategy;
     }
 
-    public void setIdEstrategy(int idStrategy) {
+    public void setIdStrategy(int idStrategy) {
         this.idStrategy = idStrategy;
     }
 

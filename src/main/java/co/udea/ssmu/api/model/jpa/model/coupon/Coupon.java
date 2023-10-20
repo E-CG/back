@@ -12,11 +12,11 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "coupon")
+@Table(name = "cupon")
 public class Coupon extends Strategy{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "code")
+    @Column(name = "codigo")
     private String code;
 
     @NotNull
@@ -24,19 +24,19 @@ public class Coupon extends Strategy{
     private String status;
 
     @NotNull
-    @Column(name = "quantity")
-    private int quantity;
+    @Column(name = "amount")
+    private int amount;
 
     @ManyToOne
     @JoinColumn(name = "id_strategy")
     private Strategy idStrategy;
     
-    public int getQuantity() {
-        return quantity;
+    public int getAmount() {
+        return amount;
     }
     
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
     
     public String getCode() {

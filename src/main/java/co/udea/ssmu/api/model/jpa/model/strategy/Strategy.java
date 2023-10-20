@@ -5,6 +5,7 @@ import java.util.List;
 import co.udea.ssmu.api.model.jpa.model.coupon.Coupon;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -29,11 +30,6 @@ public class Strategy {
     private String description;
 
     @NotNull
-    @OneToMany
-    @Column(name = "code")
-    private String code;
-
-    @NotNull
     @Column(name = "porcentaje_descuento")
     private int discountPercentage;
 
@@ -53,7 +49,19 @@ public class Strategy {
     @Column(name = "endDate")
     private LocalDate endDate;
 
-    @OneToMany(mappedBy = "strategy")
+    @NotNull
+    @Column(name = "discount_value")
+    private int discountValue;
+
+    @NotNull
+    @Column(name = "min_value")
+    private int minValue;
+
+    @NotNull
+    @Column(name = "max_discount")
+    private int maxDiscount;
+
+    @OneToMany(mappedBy = "estrategia", fetch = FetchType.LAZY)
     private List<Coupon> coupons;
 
     public int getIdStrategy() {
@@ -80,16 +88,9 @@ public class Strategy {
         this.description = description;
     }
 
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
     public int getDiscountPercentage() {
         return discountPercentage;
+
     }
 
     public void setDiscountPercentage(int discountPercentage) {
@@ -134,5 +135,29 @@ public class Strategy {
 
     public void setCoupons(List<Coupon> coupons) {
         this.coupons = coupons;
+    }
+
+    public int getDiscountValue() {
+        return discountValue;
+    }
+
+    public void setDiscountValue(int discountValue) {
+        this.discountValue = discountValue;
+    }
+
+    public int getMinValue() {
+        return minValue;
+    }
+
+    public void setMinValue(int minValue) {
+        this.minValue = minValue;
+    }
+
+    public int getMaxDiscount() {
+        return maxDiscount;
+    }
+
+    public void setMaxDiscount(int maxDiscount) {
+        this.maxDiscount = maxDiscount;
     }
 }
