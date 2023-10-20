@@ -23,4 +23,8 @@ public class CouponFacade {
         return couponMapper.toDto(couponService.saveCoupon(couponMapper.toEntity(coupon)));
     }
 
+    public CouponDTO update(CouponDTO coupon){
+        return couponMapper.toDto(couponService.updateCoupon(couponMapper.toEntity(coupon)));
+    }
+
 }
