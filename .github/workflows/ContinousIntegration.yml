@@ -7,7 +7,7 @@ on:
   # Cuando se hace push a la rama main-m9
   push:
     branches:
-      - main-m9
+      - modulo-9
 # Definición de trabajos
 jobs:
   build:
