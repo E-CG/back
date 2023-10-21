@@ -1,3 +1,5 @@
+# Setting up database oracle connection
+spring.jpa.show-sql: true
 # Server properties
 server:
   servlet:
