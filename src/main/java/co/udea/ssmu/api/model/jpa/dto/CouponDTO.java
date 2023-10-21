@@ -4,7 +4,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 
-public class CouponDTO extends StrategyDTO{
+public class CouponDTO{
     @NotEmpty(message = "Falta el código del cupón")
     private String code;
     @Min(1)

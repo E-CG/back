@@ -1,6 +1,7 @@
 package co.udea.ssmu.api.model.jpa.model.strategy;
 
 import java.time.LocalDate;
+import java.util.List;
 import co.udea.ssmu.api.model.jpa.model.coupon.Coupon;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,8 +10,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
@@ -41,11 +40,9 @@ public class Strategy {
     @Column(name = "ciudad")
     private String city;
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "fecha_inicio")
     private LocalDate startDate;
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "fecha_fin")
     private LocalDate endDate;
 
@@ -61,8 +58,8 @@ public class Strategy {
     @Column(name = "descuento_maximo")
     private int maxDiscount;
 
-    @OneToMany(mappedBy = "estrategia")
-    private Coupon coupon;
+    @OneToMany(mappedBy = "strategy")
+    private List<Coupon> coupon;
 
     public Strategy() {
     }
@@ -157,11 +154,11 @@ public class Strategy {
         this.maxDiscount = maxDiscount;
     }
 
-    public Coupon getCoupon() {
+    public List<Coupon> getCoupon() {
         return coupon;
     }
 
-    public void setCoupon(Coupon coupon) {
+    public void setCoupon(List<Coupon> coupon) {
         this.coupon = coupon;
     }
 }
