@@ -14,7 +14,7 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/cupones")
+@RequestMapping("/coupons")
 public class CouponController {
     private final CouponFacade couponFacade;
     private final Messages messages;
@@ -25,7 +25,7 @@ public class CouponController {
     }
 
     // Crear cupón
-    @PostMapping("/crear")
+    @PostMapping("/create")
     @Operation(summary = "Permite crear un cupón")
     public ResponseEntity<StandardResponse<CouponDTO>> crearCupon(@Valid @RequestBody CouponDTO newCoupon) {
         return ResponseEntity.ok(new StandardResponse<>(StandardResponse.StatusStandardResponse.OK,
@@ -33,7 +33,7 @@ public class CouponController {
     }
     
     // Editar cupón
-    @PutMapping("/actualizar")
+    @PutMapping("/update")
     @Operation(summary = "Permite actualizar los datos de un cupón")
     public ResponseEntity<StandardResponse<CouponDTO>> update(@Valid @RequestBody CouponDTO coupon) {
         return ResponseEntity.ok(new StandardResponse<>(StandardResponse.StatusStandardResponse.OK,
