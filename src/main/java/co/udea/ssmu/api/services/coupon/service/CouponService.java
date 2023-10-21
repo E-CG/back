@@ -24,7 +24,7 @@ public class CouponService {
     public Coupon saveCoupon(Coupon coupon) {
         Optional<Coupon> couponOptional = couponRepository.findById(coupon.getCode());
         if (couponOptional.isPresent()) {
-            throw new BusinessException(String.format(messages.get("El cupón ya existe"), coupon.getCode()));
+            throw new BusinessException(String.format(messages.get("coupon.save.duplicate.code"), coupon.getCode()));
         }
         // cuponRepository es una interfaz que hereda de JpaRepository, por tanto, sus métodos
         return couponRepository.save(coupon);
@@ -33,7 +33,7 @@ public class CouponService {
     public Coupon updateCoupon(Coupon coupon) {
         Optional<Coupon> couponOptional = couponRepository.findById(coupon.getCode());
         if (couponOptional.isEmpty()) {
-            throw new BusinessException(String.format(messages.get("El cupón no existe")));
+            throw new BusinessException(String.format(messages.get("coupon.update.does.not.exist")));
         }
         return couponRepository.save(coupon);
     }

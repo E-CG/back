@@ -9,31 +9,43 @@ import jakarta.validation.constraints.NotNull;
 
 public class StrategyDTO {
     // Atributos de una estrategia
+
     private int idStrategy;
     @NotEmpty(message = "Falta el nombre de la estrategia")
     private String name;
+
     @NotEmpty(message = "Falta una descripción")
     private String description;
+
     @NotNull(message = "Falta la fecha de inicio")
     @JsonFormat(pattern = "yyyy-MM-dd:HH:mm:ss")
     private LocalDate startDate;
+
     @JsonFormat(pattern = "yyyy-MM-dd:HH:mm:ss")
     private LocalDate endDate;
+
     @Min(1)
     @Max(100)
     private int discountPercentage;
+
     @Min(0)
     @Max(50000)
     private int discountValue;
+
     @Min(5000)
     @Max(100000)
     private int minValue;
+
     @Min(5000)
     @Max(100000)
     private int maxDiscount;
-    private Boolean isActive;
+
+    private String isActive;
+
     @NotEmpty(message = "Falta la ciudad")
     private String city;
+    
+    private CouponDTO codeCoupon;
 
     // Constructor
     public StrategyDTO() {
@@ -41,11 +53,11 @@ public class StrategyDTO {
     }
 
     // Getter y Setter
-    public Boolean getIsActive() {
+    public String getIsActive() {
         return isActive;
     }
 
-    public void setIsActive(Boolean isActive) {
+    public void setIsActive(String isActive) {
         this.isActive = isActive;
     }
 
@@ -119,5 +131,13 @@ public class StrategyDTO {
 
     public void setDiscountPercentage(int discountPercentage) {
         this.discountPercentage = discountPercentage;
+    }
+    
+    public CouponDTO getCodeCoupon() {
+        return codeCoupon;
+    }
+
+    public void setCodeCoupon(CouponDTO codeCoupon) {
+        this.codeCoupon = codeCoupon;
     }
 }

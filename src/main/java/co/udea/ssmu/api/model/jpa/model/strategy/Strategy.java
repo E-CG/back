@@ -1,16 +1,16 @@
 package co.udea.ssmu.api.model.jpa.model.strategy;
 
 import java.time.LocalDate;
-import java.util.List;
 import co.udea.ssmu.api.model.jpa.model.coupon.Coupon;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
@@ -18,15 +18,15 @@ import jakarta.validation.constraints.NotNull;
 public class Strategy {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_strategy")
+    @Column(name = "id_estrategia")
     private int idStrategy;
 
     @NotNull
-    @Column(name = "name")
+    @Column(name = "nombre")
     private String name;
 
     @NotNull
-    @Column(name = "description")
+    @Column(name = "descripcion")
     private String description;
 
     @NotNull
@@ -34,35 +34,38 @@ public class Strategy {
     private int discountPercentage;
 
     @NotNull
-    @Column(name = "isActive")
+    @Column(name = "estado")
     private String isActive;
 
     @NotNull
-    @Column(name = "city")
+    @Column(name = "ciudad")
     private String city;
 
-    @NotNull
-    @Column(name = "startDate")
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "fecha_inicio")
     private LocalDate startDate;
 
-    @NotNull
-    @Column(name = "endDate")
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "fecha_fin")
     private LocalDate endDate;
 
     @NotNull
-    @Column(name = "discount_value")
+    @Column(name = "valor_descuento")
     private int discountValue;
 
     @NotNull
-    @Column(name = "min_value")
+    @Column(name = "valor_minimo")
     private int minValue;
 
     @NotNull
-    @Column(name = "max_discount")
+    @Column(name = "descuento_maximo")
     private int maxDiscount;
 
-    @OneToMany(mappedBy = "estrategia", fetch = FetchType.LAZY)
-    private List<Coupon> coupons;
+    @OneToMany(mappedBy = "estrategia")
+    private Coupon coupon;
+
+    public Strategy() {
+    }
 
     public int getIdStrategy() {
         return idStrategy;
@@ -129,13 +132,6 @@ public class Strategy {
         this.endDate = endDate;
     }
 
-    public List<Coupon> getCoupons() {
-        return coupons;
-    }
-
-    public void setCoupons(List<Coupon> coupons) {
-        this.coupons = coupons;
-    }
 
     public int getDiscountValue() {
         return discountValue;
@@ -159,5 +155,13 @@ public class Strategy {
 
     public void setMaxDiscount(int maxDiscount) {
         this.maxDiscount = maxDiscount;
+    }
+
+    public Coupon getCoupon() {
+        return coupon;
+    }
+
+    public void setCoupon(Coupon coupon) {
+        this.coupon = coupon;
     }
 }

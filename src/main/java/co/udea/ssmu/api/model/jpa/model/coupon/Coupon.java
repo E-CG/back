@@ -13,24 +13,27 @@ import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "cupon")
-public class Coupon extends Strategy{
+public class Coupon{
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "codigo")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String code;
 
     @NotNull
-    @Column(name = "status")
+    @Column(name = "estado_cupon")
     private String status;
 
     @NotNull
-    @Column(name = "amount")
+    @Column(name = "cantidad_disponible")
     private int amount;
 
     @ManyToOne
-    @JoinColumn(name = "id_strategy")
-    private Strategy idStrategy;
+    @JoinColumn(name = "codigo", nullable = false)
+    private Strategy strategy;
     
+    public Coupon() {
+    }
+
     public int getAmount() {
         return amount;
     }
@@ -53,13 +56,5 @@ public class Coupon extends Strategy{
     
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public Strategy getStrategy() {
-        return idStrategy;
-    }
-    
-    public void setIdStrategy(Strategy idStrategy) {
-        this.idStrategy = idStrategy;
     }
 }

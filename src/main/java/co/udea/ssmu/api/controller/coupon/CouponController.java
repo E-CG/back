@@ -29,7 +29,7 @@ public class CouponController {
     @Operation(summary = "Permite crear un cupón")
     public ResponseEntity<StandardResponse<CouponDTO>> crearCupon(@Valid @RequestBody CouponDTO newCoupon) {
         return ResponseEntity.ok(new StandardResponse<>(StandardResponse.StatusStandardResponse.OK,
-                messages.get("Solicitud éxitosa"), couponFacade.saveCoupon(newCoupon)));
+                messages.get("coupon.save.successful"), couponFacade.saveCoupon(newCoupon)));
     }
     
     // Editar cupón
@@ -37,7 +37,7 @@ public class CouponController {
     @Operation(summary = "Permite actualizar los datos de un cupón")
     public ResponseEntity<StandardResponse<CouponDTO>> update(@Valid @RequestBody CouponDTO coupon) {
         return ResponseEntity.ok(new StandardResponse<>(StandardResponse.StatusStandardResponse.OK,
-                messages.get("Cupón actualizado correctamente"),
+                messages.get("coupon.update.successful"),
                 couponFacade.update(coupon)));
     }
 }
