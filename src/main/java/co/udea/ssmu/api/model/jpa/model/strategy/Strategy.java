@@ -34,8 +34,8 @@ public class Strategy {
     private int discountPercentage;
 
     @NotNull
-    @Column(name = "status")
-    private String status;
+    @Column(name = "isActive")
+    private String isActive;
 
     @NotNull
     @Column(name = "city")
@@ -97,12 +97,12 @@ public class Strategy {
         this.discountPercentage = discountPercentage;
     }
 
-    public String getStatus() {
-        return status;
+    public String getIsActive() {
+        return isActive;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setIsActive(String isActive) {
+        this.isActive = isActive;
     }
 
     public String getCity() {

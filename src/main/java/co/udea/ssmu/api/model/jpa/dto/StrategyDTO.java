@@ -25,7 +25,11 @@ public class StrategyDTO {
     @Min(0)
     @Max(50000)
     private int discountValue;
+    @Min(5000)
+    @Max(100000)
     private int minValue;
+    @Min(5000)
+    @Max(100000)
     private int maxDiscount;
     private Boolean isActive;
     @NotEmpty(message = "Falta la ciudad")
