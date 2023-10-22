@@ -18,7 +18,27 @@ En el paquete de `Utils`, se encuentran las clases auxiliares. Por ejemplo, `Cou
 
 #### Ejemplo de uso 👀:
 - `valorMin`: Para limitar el descuento fijo.
-- `valorMax`: Para limitar el valor en pesos por aplicar descuento porcentaje.
+- `maxDiscount`: Para limitar el valor en pesos por aplicar descuento porcentaje.
 
 **Nota:**
-`descuentoPorcentaje` puede tener `valorMin` y `valorMax` debido a la posibilidad de que el viaje tenga un costo específico, y el cupón se aplique a viajes con un `valorMin` definido, y se le pueda restar hasta que el `valorMax` sea alcanzado (por ejemplo, un viaje de $50 con `valorMin` de $30 y `valorMax` de $45).
+`descuentoPorcentaje` puede tener `valorMin` y `maxDiscount` debido a la posibilidad de que el viaje tenga un costo específico, y el cupón se aplique a viajes con un `valorMin` definido, y se le pueda restar hasta que el `maxDiscount` sea alcanzado (por ejemplo, un viaje de $50 con `valorMin` de $30 y `maxDiscount` de $45).
+
+**Pruebas APIs:**
+`{
+  "code": "CUPON123",
+  "amount": 50,
+  "status": "Inactive",
+  "idStrategy": {
+    "idStrategy": 1,
+    "name": "Estrategia1",
+    "description": "Descripción de la estrategia",
+    "startDate": "2023-11-01",
+    "endDate": "2023-12-01",
+    "discountPercentage": 20,
+    "discountValue": 10000,
+    "minValue": 6000,
+    "maxDiscount": 30000,
+    "isActive": "1",
+    "city": "Medellín"
+  }
+}`

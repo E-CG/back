@@ -1,9 +1,7 @@
 package co.udea.ssmu.api.model.jpa.dto;
 
 import java.time.LocalDate;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
-
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
@@ -12,26 +10,42 @@ import jakarta.validation.constraints.NotNull;
 public class StrategyDTO {
     // Atributos de una estrategia
     private int idStrategy;
+
     @NotEmpty(message = "Falta el nombre de la estrategia")
     private String name;
+
     @NotEmpty(message = "Falta una descripción")
     private String description;
+
     @NotNull(message = "Falta la fecha de inicio")
     @JsonFormat(pattern = "yyyy-MM-dd:HH:mm:ss")
     private LocalDate startDate;
+
     @JsonFormat(pattern = "yyyy-MM-dd:HH:mm:ss")
     private LocalDate endDate;
-    @Min(1)
-    @Max(100)
+
+    @Min(value = 1, message = "El porcentaje de descuento debe ser mayor que 0")
+    @Max(value = 100, message = "El porcentaje de descuento no puede ser mayor al 100%")
     private int discountPercentage;
-    @Min(0)
-    @Max(50000)
+
+    @Min(value = 0, message = "El valor de descuento no puede ser negativo")
+    @Max(value = 50000, message = "El valor de descuento no puede ser mayor a 50,000")
     private int discountValue;
+
+    @Min(value = 5000, message = "El valor mínimo debe ser al menos 5000")
+    @Max(value = 100000, message = "El valor mínimo no puede ser mayor a 100,000")
     private int minValue;
+
+    @Min(value = 5000, message = "El descuento máximo debe ser al menos 5000")
+    @Max(value = 100000, message = "El descuento máximo no puede ser mayor a 100,000")
     private int maxDiscount;
-    private Boolean estado;
+
+    private String isActive;
+
     @NotEmpty(message = "Falta la ciudad")
     private String city;
+
+    private CouponDTO codeCoupon;
 
     // Constructor
     public StrategyDTO() {
@@ -39,19 +53,19 @@ public class StrategyDTO {
     }
 
     // Getter y Setter
-    public Boolean getEstado() {
-        return estado;
+    public String getIsActive() {
+        return isActive;
     }
 
-    public void setEstado(Boolean estado) {
-        this.estado = estado;
+    public void setIsActive(String isActive) {
+        this.isActive = isActive;
     }
 
-    public String getCiudad() {
+    public String getCity() {
         return city;
     }
 
-    public void setCiudad(String city) {
+    public void setCity(String city) {
         this.city = city;
     }
 
@@ -103,11 +117,11 @@ public class StrategyDTO {
         this.name = name;
     }
 
-    public int getIdEstrategy() {
+    public int getIdStrategy() {
         return idStrategy;
     }
 
-    public void setIdEstrategy(int idStrategy) {
+    public void setIdStrategy(int idStrategy) {
         this.idStrategy = idStrategy;
     }
 
@@ -117,5 +131,21 @@ public class StrategyDTO {
 
     public void setDiscountPercentage(int discountPercentage) {
         this.discountPercentage = discountPercentage;
+    }
+    
+    public CouponDTO getCodeCoupon() {
+        return codeCoupon;
+    }
+
+    public void setCodeCoupon(CouponDTO codeCoupon) {
+        this.codeCoupon = codeCoupon;
+    }
+
+    public int getDiscountValue() {
+        return discountValue;
+    }
+
+    public void setDiscountValue(int discountValue) {
+        this.discountValue = discountValue;
     }
 }

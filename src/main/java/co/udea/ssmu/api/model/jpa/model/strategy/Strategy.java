@@ -17,44 +17,52 @@ import jakarta.validation.constraints.NotNull;
 public class Strategy {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_strategy")
+    @Column(name = "id_estrategia")
     private int idStrategy;
 
     @NotNull
-    @Column(name = "name")
+    @Column(name = "nombre")
     private String name;
 
     @NotNull
-    @Column(name = "description")
+    @Column(name = "descripcion")
     private String description;
-
-    @NotNull
-    @OneToMany
-    @Column(name = "code")
-    private String code;
 
     @NotNull
     @Column(name = "porcentaje_descuento")
     private int discountPercentage;
 
     @NotNull
-    @Column(name = "status")
-    private String status;
+    @Column(name = "estado")
+    private String isActive;
 
     @NotNull
-    @Column(name = "city")
+    @Column(name = "ciudad")
     private String city;
 
-    @NotNull
-    @Column(name = "startDate")
+    @Column(name = "fecha_inicio")
     private LocalDate startDate;
 
-    @NotNull
-    @Column(name = "endDate")
+    @Column(name = "fecha_fin")
     private LocalDate endDate;
 
+    @NotNull
+    @Column(name = "valor_descuento")
+    private int discountValue;
+
+    @NotNull
+    @Column(name = "valor_minimo")
+    private int minValue;
+
+    @NotNull
+    @Column(name = "descuento_maximo")
+    private int maxDiscount;
+
     @OneToMany(mappedBy = "strategy")
-    private List<Coupon> coupons;
+    private List<Coupon> coupon;
+
+    public Strategy() {
+    }
 
     public int getIdStrategy() {
         return idStrategy;
@@ -80,28 +88,21 @@ public class Strategy {
         this.description = description;
     }
 
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
     public int getDiscountPercentage() {
         return discountPercentage;
+
     }
 
     public void setDiscountPercentage(int discountPercentage) {
         this.discountPercentage = discountPercentage;
     }
 
-    public String getStatus() {
-        return status;
+    public String getIsActive() {
+        return isActive;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setIsActive(String isActive) {
+        this.isActive = isActive;
     }
 
     public String getCity() {
@@ -128,11 +129,36 @@ public class Strategy {
         this.endDate = endDate;
     }
 
-    public List<Coupon> getCoupons() {
-        return coupons;
+
+    public int getDiscountValue() {
+        return discountValue;
     }
 
-    public void setCoupons(List<Coupon> coupons) {
-        this.coupons = coupons;
+    public void setDiscountValue(int discountValue) {
+        this.discountValue = discountValue;
+    }
+
+    public int getMinValue() {
+        return minValue;
+    }
+
+    public void setMinValue(int minValue) {
+        this.minValue = minValue;
+    }
+
+    public int getMaxDiscount() {
+        return maxDiscount;
+    }
+
+    public void setMaxDiscount(int maxDiscount) {
+        this.maxDiscount = maxDiscount;
+    }
+
+    public List<Coupon> getCoupons() {
+        return coupon;
+    }
+
+    public void setCoupons(List<Coupon> coupon) {
+        this.coupon = coupon;
     }
 }

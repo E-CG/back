@@ -12,54 +12,57 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "coupon")
-public class Coupon extends Strategy{
+@Table(name = "cupon")
+public class Coupon {
     @Id
+    @Column(name = "codigo", insertable = false, updatable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "code")
     private String code;
 
     @NotNull
-    @Column(name = "status")
+    @Column(name = "estado_cupon")
     private String status;
 
     @NotNull
-    @Column(name = "quantity")
-    private int quantity;
+    @Column(name = "cantidad_disponible")
+    private int amount;
 
     @ManyToOne
-    @JoinColumn(name = "id_strategy")
-    private Strategy idStrategy;
-    
-    public int getQuantity() {
-        return quantity;
+    @JoinColumn(name = "id_estrategia", nullable = false)
+    private Strategy strategy;
+
+    public Coupon() {
     }
-    
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+
+    public int getAmount() {
+        return amount;
     }
-    
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
     public String getCode() {
         return code;
     }
-    
+
     public void setCode(String code) {
         this.code = code;
     }
-    
+
     public String getStatus() {
         return status;
     }
-    
+
     public void setStatus(String status) {
         this.status = status;
     }
 
-    public Strategy getStrategy() {
-        return idStrategy;
+    public Strategy getIdStrategy() {
+        return strategy;
     }
-    
-    public void setIdStrategy(Strategy idStrategy) {
-        this.idStrategy = idStrategy;
+
+    public void setIdStrategy(Strategy strategy) {
+        this.strategy = strategy;
     }
 }

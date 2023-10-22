@@ -1,8 +1,18 @@
+# Setting up database oracle connection
+spring.datasource.url: jdbc:oracle:thin:@localhost:1521/GestionComercial
+spring.datasource.username: esteban
+spring.datasource.password: gc999
+spring.datasource.driver-class-name: oracle.jdbc.OracleDriver
+spring.jpa.show-sql: true
+spring.jpa.hibernate.ddl-auto: update
+spring.main.allow-circular-references: true
+
 # Server properties
 server:
   servlet:
     context-path: /ssmu-api
   port: 8080
+
 # Spring properties
 spring:
   # Dev is active by default. This value can be overwritten by java arg param
