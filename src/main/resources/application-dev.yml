@@ -38,3 +38,9 @@ logging:
   level:
     root: DEBUG
     org.springframework: DEBUG
+
+# Server properties
+server:
+  servlet:
+    context-path: /ssmu-api
+  port: 8080

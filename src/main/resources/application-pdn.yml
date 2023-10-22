@@ -6,6 +6,7 @@ spring:
     properties:
       hibernate:
         order_inserts: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
         jdbc:
           batch_size: 50
           lob:
@@ -16,11 +17,9 @@ spring:
 
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:oracle:thin:@localhost:1521/xepdb1  # Cambiado el URL para Oracle
-    username: esteban  # Cambiado el nombre de usuario
-    password: gc999  # Cambiada la contraseña
-    driver-class-name: oracle.jdbc.OracleDriver  # Cambiado el nombre del controlador
-
+    url: jdbc:postgresql://127.0.0.1:5432/ssmu-dev?serverTimezone=America/Bogota
+    username: username
+    password: password
     hikari:
       idle-timeout: 10000
       maximum-pool-size: 5
@@ -30,7 +29,7 @@ spring:
 
 ssmu-api:
   openapi:
-    dev-url: http://localhost:8080/ssmu-api
+    dev-url: http://localhost:8080/ssmu-api/api
     prod-url: https://ssmu-api.com
 
 logging:

@@ -6,11 +6,13 @@ spring.datasource.driver-class-name: oracle.jdbc.OracleDriver
 spring.jpa.show-sql: true
 spring.jpa.hibernate.ddl-auto: update
 spring.main.allow-circular-references: true
+
 # Server properties
 server:
   servlet:
     context-path: /ssmu-api
   port: 8080
+
 # Spring properties
 spring:
   # Dev is active by default. This value can be overwritten by java arg param
