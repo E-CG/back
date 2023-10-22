@@ -4,12 +4,14 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 
-public class CouponDTO{
+public class CouponDTO {
     @NotEmpty(message = "Falta el código del cupón")
     private String code;
-    @Min(1)
-    @Max(100)
+
+    @Min(value = 1, message = "La cantidad debe ser como mínimo 1")
+    @Max(value = 100, message = "La cantidad no puede ser mayor a 100")
     private int amount;
+
     private String status;
     private StrategyDTO idStrategy;
 
@@ -25,11 +27,11 @@ public class CouponDTO{
     public void setCode(String code) {
         this.code = code;
     }
-    
+
     public int getAmount() {
         return amount;
     }
-    
+
     public void setAmount(int amount) {
         this.amount = amount;
     }
@@ -37,16 +39,16 @@ public class CouponDTO{
     public String getStatus() {
         return status;
     }
-    
+
     public void setStatus(String estadoCupon) {
-        this.status= estadoCupon;
+        this.status = estadoCupon;
     }
 
-    public StrategyDTO getStrategy() {
+    public StrategyDTO getIdStrategy() {
         return idStrategy;
     }
 
-    public void setStrategy(StrategyDTO idStrategy) {
+    public void setIdStrategy(StrategyDTO idStrategy) {
         this.idStrategy = idStrategy;
     }
 }

@@ -6,7 +6,6 @@ spring:
     properties:
       hibernate:
         order_inserts: true
-        dialect: org.hibernate.dialect.OracleDialect  # Cambiado el dialecto a Oracle
         jdbc:
           batch_size: 50
           lob:

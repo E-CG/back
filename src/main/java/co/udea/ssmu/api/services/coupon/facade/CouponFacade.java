@@ -10,14 +10,10 @@ import jakarta.transaction.Transactional;
 @Service
 @Transactional
 public class CouponFacade {
-    private final CouponService couponService;
     @Autowired
-    private final CouponMapper couponMapper;
-    
-    public CouponFacade(CouponService couponService, CouponMapper couponMapper) {
-        this.couponService = couponService;
-        this.couponMapper = couponMapper;
-    }
+    private CouponService couponService;
+    @Autowired
+    private CouponMapper couponMapper;
 
     public CouponDTO saveCoupon(CouponDTO coupon){
         return couponMapper.toDto(couponService.saveCoupon(couponMapper.toEntity(coupon)));

@@ -154,11 +154,11 @@ public class Strategy {
         this.maxDiscount = maxDiscount;
     }
 
-    public List<Coupon> getCoupon() {
+    public List<Coupon> getCoupons() {
         return coupon;
     }
 
-    public void setCoupon(List<Coupon> coupon) {
+    public void setCoupons(List<Coupon> coupon) {
         this.coupon = coupon;
     }
 }

@@ -9,8 +9,8 @@ import jakarta.validation.constraints.NotNull;
 
 public class StrategyDTO {
     // Atributos de una estrategia
-
     private int idStrategy;
+
     @NotEmpty(message = "Falta el nombre de la estrategia")
     private String name;
 
@@ -24,27 +24,27 @@ public class StrategyDTO {
     @JsonFormat(pattern = "yyyy-MM-dd:HH:mm:ss")
     private LocalDate endDate;
 
-    @Min(1)
-    @Max(100)
+    @Min(value = 1, message = "El porcentaje de descuento debe ser mayor que 0")
+    @Max(value = 100, message = "El porcentaje de descuento no puede ser mayor al 100%")
     private int discountPercentage;
 
-    @Min(0)
-    @Max(50000)
+    @Min(value = 0, message = "El valor de descuento no puede ser negativo")
+    @Max(value = 50000, message = "El valor de descuento no puede ser mayor a 50,000")
     private int discountValue;
 
-    @Min(5000)
-    @Max(100000)
+    @Min(value = 5000, message = "El valor mínimo debe ser al menos 5000")
+    @Max(value = 100000, message = "El valor mínimo no puede ser mayor a 100,000")
     private int minValue;
 
-    @Min(5000)
-    @Max(100000)
+    @Min(value = 5000, message = "El descuento máximo debe ser al menos 5000")
+    @Max(value = 100000, message = "El descuento máximo no puede ser mayor a 100,000")
     private int maxDiscount;
 
     private String isActive;
 
     @NotEmpty(message = "Falta la ciudad")
     private String city;
-    
+
     private CouponDTO codeCoupon;
 
     // Constructor
@@ -139,5 +139,13 @@ public class StrategyDTO {
 
     public void setCodeCoupon(CouponDTO codeCoupon) {
         this.codeCoupon = codeCoupon;
+    }
+
+    public int getDiscountValue() {
+        return discountValue;
+    }
+
+    public void setDiscountValue(int discountValue) {
+        this.discountValue = discountValue;
     }
 }
