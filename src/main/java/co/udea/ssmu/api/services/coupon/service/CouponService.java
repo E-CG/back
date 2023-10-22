@@ -13,15 +13,11 @@ import jakarta.transaction.Transactional;
 @Transactional
 public class CouponService {
     @Autowired
-    private final CouponRepository couponRepository;
-    private final Messages messages;
-    
-    public CouponService(CouponRepository couponRepository, Messages messages) {
-        this.couponRepository = couponRepository;
-        this.messages = messages;
-    }
+    private CouponRepository couponRepository;
+    @Autowired
+    private Messages messages;
 
-    public Coupon saveCoupon(Coupon coupon) {
+    public Coupon save(Coupon coupon) {
         Optional<Coupon> couponOptional = couponRepository.findById(coupon.getCode());
         if (couponOptional.isPresent()) {
             throw new BusinessException(String.format(messages.get("coupon.save.duplicate.code"), coupon.getCode()));

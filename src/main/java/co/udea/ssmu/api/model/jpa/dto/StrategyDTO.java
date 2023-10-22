@@ -18,10 +18,11 @@ public class StrategyDTO {
     private String description;
 
     @NotNull(message = "Falta la fecha de inicio")
-    @JsonFormat(pattern = "yyyy-MM-dd:HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDate startDate;
 
-    @JsonFormat(pattern = "yyyy-MM-dd:HH:mm:ss")
+    @NotNull(message = "Falta la fecha de finalización")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDate endDate;
 
     @Min(value = 1, message = "El porcentaje de descuento debe ser mayor que 0")
