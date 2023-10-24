@@ -19,7 +19,6 @@ public class Strategy {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "estrategia_seq")
     @SequenceGenerator(name = "estrategia_seq", sequenceName = "estrategia_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_estrategia")
     private int idStrategy;
 
