@@ -22,7 +22,7 @@ public class CouponController {
         this.messages = messages;
     }
 
-    // Crear cupón. ES LA FECHA
+    // Crear cupón
     @PostMapping(path = "/create")
     @Operation(summary = "Permite crear un cupón")
     public ResponseEntity<StandardResponse<CouponDTO>> save(@Valid @RequestBody CouponDTO couponDTO) {
