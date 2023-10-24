@@ -19,6 +19,10 @@ public class CouponFacade {
         return couponMapper.toDto(couponService.saveCoupon(couponMapper.toEntity(coupon)));
     }
 
+    public List<CouponDTO> findByAll() {
+        List<Coupon> coupons = couponService.findByAll();
+        return couponMapper.toDto(coupons);
+    }
     public CouponDTO update(CouponDTO coupon){
         return couponMapper.toDto(couponService.updateCoupon(couponMapper.toEntity(coupon)));
     }

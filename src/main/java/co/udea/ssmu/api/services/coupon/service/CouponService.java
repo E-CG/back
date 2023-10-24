@@ -30,6 +30,9 @@ public class CouponService {
         return couponRepository.save(coupon);
     }
 
+    public List<Coupon> findByAll() {
+        return couponRepository.findAll();
+    }
     public Coupon updateCoupon(Coupon coupon) {
         Optional<Coupon> couponOptional = couponRepository.findById(coupon.getCode());
         if (couponOptional.isEmpty()) {

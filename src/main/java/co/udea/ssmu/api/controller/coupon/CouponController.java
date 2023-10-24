@@ -3,10 +3,7 @@ package co.udea.ssmu.api.controller.coupon;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import co.udea.ssmu.api.model.jpa.dto.CouponDTO;
 import co.udea.ssmu.api.services.coupon.facade.CouponFacade;
 import co.udea.ssmu.api.utils.common.Messages;
@@ -18,6 +15,8 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/coupons")
@@ -38,6 +37,16 @@ public class CouponController {
     public ResponseEntity<StandardResponse<CouponDTO>> crearCupon(@Valid @RequestBody CouponDTO newCoupon) {
         return ResponseEntity.ok(new StandardResponse<>(StandardResponse.StatusStandardResponse.OK,
                 messages.get("coupon.save.successful"), couponFacade.saveCoupon(newCoupon)));
+    }
+
+    // Visualizar cupones
+    @GetMapping("/visualizar")
+    @Operation(summary = "Permite consultar todos los cupones")
+    // @ApiResponse
+    public ResponseEntity<StandardResponse<List<CouponDTO>>> findAll() {
+        return ResponseEntity.ok(new StandardResponse<>(StandardResponse.StatusStandardResponse.OK,
+                messages.get("Consulta exitosa"),
+                couponFacade.findByAll()));
     }
 
     // Editar cupón
