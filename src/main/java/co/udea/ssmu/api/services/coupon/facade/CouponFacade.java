@@ -31,7 +31,7 @@ public class CouponFacade {
                 couponDTO.setCode(couponBuilder.buildCodeCoupon(strategyDTO.getName()));
             }
         }
-        return couponMapper.toDto(couponService.save(couponMapper.toEntity(couponDTO)));
+        return couponMapper.toDto(couponService.saveCoupon(couponMapper.toEntity(couponDTO)));
     }
 
     public CouponDTO update(CouponDTO coupon) {
