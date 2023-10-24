@@ -46,8 +46,6 @@ public class StrategyDTO {
     @NotEmpty(message = "Falta la ciudad")
     private String city;
 
-    private CouponDTO codeCoupon;
-
     // Constructor
     public StrategyDTO() {
 
@@ -132,14 +130,6 @@ public class StrategyDTO {
 
     public void setDiscountPercentage(int discountPercentage) {
         this.discountPercentage = discountPercentage;
-    }
-    
-    public CouponDTO getCodeCoupon() {
-        return codeCoupon;
-    }
-
-    public void setCodeCoupon(CouponDTO codeCoupon) {
-        this.codeCoupon = codeCoupon;
     }
 
     public int getDiscountValue() {
