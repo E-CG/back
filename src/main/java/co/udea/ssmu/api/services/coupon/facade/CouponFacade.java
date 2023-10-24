@@ -31,12 +31,10 @@ public class CouponFacade {
                 couponDTO.setCode(couponBuilder.buildCodeCoupon(strategyDTO.getName()));
             }
         }
-
         return couponMapper.toDto(couponService.save(couponMapper.toEntity(couponDTO)));
     }
 
     public CouponDTO update(CouponDTO coupon) {
         return couponMapper.toDto(couponService.updateCoupon(couponMapper.toEntity(coupon)));
     }
-
 }

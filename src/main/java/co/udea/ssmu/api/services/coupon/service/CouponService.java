@@ -16,8 +16,13 @@ public class CouponService {
     private CouponRepository couponRepository;
     @Autowired
     private Messages messages;
+    
+    public CouponService(CouponRepository couponRepository, Messages messages) {
+        this.couponRepository = couponRepository;
+        this.messages = messages;
+    }
 
-    public Coupon save(Coupon coupon) {
+    public Coupon saveCoupon(Coupon coupon) {
         Optional<Coupon> couponOptional = couponRepository.findById(coupon.getCode());
         if (couponOptional.isPresent()) {
             throw new BusinessException(String.format(messages.get("coupon.save.duplicate.code"), coupon.getCode()));

@@ -1,12 +1,23 @@
 package co.udea.ssmu.api.controller.coupon;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import co.udea.ssmu.api.model.jpa.dto.CouponDTO;
 import co.udea.ssmu.api.services.coupon.facade.CouponFacade;
 import co.udea.ssmu.api.utils.common.Messages;
 import co.udea.ssmu.api.utils.common.StandardResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,13 +25,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(path = "/coupons")
 public class CouponController {
-    private final CouponFacade couponFacade;
-    private final Messages messages;
+    @Autowired
+    private CouponFacade couponFacade;
+    @Autowired
+    private Messages messages;
 
-    public CouponController(CouponFacade couponFacade, Messages messages) {
-        this.couponFacade = couponFacade;
-        this.messages = messages;
-    }
 
     // Crear cupón
     @PostMapping(path = "/create")
