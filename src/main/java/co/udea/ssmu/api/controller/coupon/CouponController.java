@@ -40,12 +40,12 @@ public class CouponController {
     }
 
     // Visualizar cupones
-    @GetMapping("/visualizar")
-    @Operation(summary = "Permite consultar todos los cupones")
+    @GetMapping(path = "/visualize")
+    @Operation(summary = "Permite visualizar todos los cupones")
     // @ApiResponse
     public ResponseEntity<StandardResponse<List<CouponDTO>>> findAll() {
         return ResponseEntity.ok(new StandardResponse<>(StandardResponse.StatusStandardResponse.OK,
-                messages.get("Consulta exitosa"),
+                messages.get("coupon.get.all.succesful"),
                 couponFacade.findByAll()));
     }
 
