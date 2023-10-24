@@ -12,13 +12,16 @@ import co.udea.ssmu.api.services.coupon.facade.CouponFacade;
 import co.udea.ssmu.api.utils.common.Messages;
 import co.udea.ssmu.api.utils.common.StandardResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "Coupon", description = "Gestiona los cupones")
 @RestController
 @RequestMapping(path = "/coupons")
 public class CouponController {
@@ -27,24 +30,23 @@ public class CouponController {
     @Autowired
     private Messages messages;
 
-    // Crear cupón
+
+    // Crear cupón. ES LA FECHA
     @PostMapping(path = "/create")
     @Operation(summary = "Permite crear un cupón")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", content = {
-                    @Content(schema = @Schema(implementation = CouponDTO.class), mediaType = MediaType.APPLICATION_JSON_VALUE)
-            }, description = "La petición se ha procesado correctamente"),
-            @ApiResponse(responseCode = "500", description = "Error interno al procesar la respuesta") })
-    public ResponseEntity<StandardResponse<CouponDTO>> crearCupon(@Valid @RequestBody CouponDTO newCoupon) {
-        return ResponseEntity.ok(new StandardResponse<>(StandardResponse.StatusStandardResponse.OK,
-                messages.get("coupon.save.successful"), couponFacade.saveCoupon(newCoupon)));
+    public ResponseEntity<StandardResponse<CouponDTO>> save(@Valid @RequestBody CouponDTO couponDTO) {
+        return ResponseEntity.ok(new StandardResponse<>(
+                StandardResponse.StatusStandardResponse.OK,
+                messages.get("coupon.save.successful"),
+                couponFacade.save(couponDTO)));
     }
 
     // Editar cupón
     @PutMapping(path = "/update")
     @Operation(summary = "Permite actualizar los datos de un cupón")
     public ResponseEntity<StandardResponse<CouponDTO>> update(@Valid @RequestBody CouponDTO coupon) {
-        return ResponseEntity.ok(new StandardResponse<>(StandardResponse.StatusStandardResponse.OK,
+        return ResponseEntity.ok(new StandardResponse<>(
+                StandardResponse.StatusStandardResponse.OK,
                 messages.get("coupon.update.successful"),
                 couponFacade.update(coupon)));
     }

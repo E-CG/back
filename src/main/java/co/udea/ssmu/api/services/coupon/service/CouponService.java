@@ -13,8 +13,9 @@ import jakarta.transaction.Transactional;
 @Transactional
 public class CouponService {
     @Autowired
-    private final CouponRepository couponRepository;
-    private final Messages messages;
+    private CouponRepository couponRepository;
+    @Autowired
+    private Messages messages;
     
     public CouponService(CouponRepository couponRepository, Messages messages) {
         this.couponRepository = couponRepository;

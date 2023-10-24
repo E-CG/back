@@ -2,12 +2,13 @@ package co.udea.ssmu.api.model.jpa.dto;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
-public class CouponDTO {
-    @NotEmpty(message = "Falta el código del cupón")
+public class CouponDTO{
+    @NotNull(message = "El código del cupón no puede ser nulo")
     private String code;
 
+    @NotNull(message = "Falta la cantidad de cupones")
     @Min(value = 1, message = "La cantidad debe ser como mínimo 1")
     @Max(value = 100, message = "La cantidad no puede ser mayor a 100")
     private int amount;
