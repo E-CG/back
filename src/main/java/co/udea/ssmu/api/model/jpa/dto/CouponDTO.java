@@ -7,7 +7,8 @@ import lombok.*;
 @Getter
 @Setter
 public class CouponDTO{
-    @NotNull(message = "El código del cupón no puede ser nulo")
+    private long id_coupon;
+
     private String code;
 
     @NotNull(message = "Falta la cantidad de cupones")
