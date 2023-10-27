@@ -15,9 +15,12 @@ import lombok.*;
 @Table(name = "cupon")
 public class Coupon {
     @Id
-    @Column(name = "codigo", insertable = false, updatable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String code;
+    @Column(name = "id_cupon")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id_coupon;
+
+    @Column(name = "codigo", nullable = false, unique = true)
+    private @NonNull String code;
 
     @NotNull
     @Column(name = "estado_cupon")
@@ -28,6 +31,6 @@ public class Coupon {
     private int amount;
 
     @ManyToOne
-    @JoinColumn(name = "id_estrategia", nullable = false)
+    @JoinColumn(name = "id_estrategia")
     private Strategy strategy;
 }
