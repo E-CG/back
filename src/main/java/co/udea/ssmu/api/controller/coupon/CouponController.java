@@ -24,8 +24,7 @@ public class CouponController {
     @Autowired
     private Messages messages;
 
-
-    // Crear cupón. ES LA FECHA
+    // Crear cupón
     @PostMapping(path = "/create")
     @Operation(summary = "Permite crear un cupón")
     public ResponseEntity<StandardResponse<CouponDTO>> save(@Valid @RequestBody CouponDTO couponDTO) {

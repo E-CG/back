@@ -9,7 +9,7 @@ import jakarta.validation.constraints.NotNull;
 
 public class StrategyDTO {
     // Atributos de una estrategia
-    private int idStrategy;
+    private long idStrategy;
 
     @NotEmpty(message = "Falta el nombre de la estrategia")
     private String name;
@@ -118,11 +118,11 @@ public class StrategyDTO {
         this.name = name;
     }
 
-    public int getIdStrategy() {
+    public long getIdStrategy() {
         return idStrategy;
     }
 
-    public void setIdStrategy(int idStrategy) {
+    public void setIdStrategy(long idStrategy) {
         this.idStrategy = idStrategy;
     }
 
