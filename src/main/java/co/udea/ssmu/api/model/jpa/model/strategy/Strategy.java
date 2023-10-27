@@ -2,7 +2,6 @@ package co.udea.ssmu.api.model.jpa.model.strategy;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import co.udea.ssmu.api.model.jpa.model.coupon.Coupon;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -49,8 +48,4 @@ public class Strategy implements Serializable {
 
     @Column(name = "descuento_maximo")
     private int maxDiscount;
-
-    @ManyToOne
-    @JoinColumn(name = "id_cupon")
-    private Coupon coupon;
 }

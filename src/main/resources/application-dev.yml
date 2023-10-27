@@ -17,10 +17,10 @@ spring:
 
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:oracle:thin:@localhost:1521/xepdb1  # Cambiado el URL para Oracle
-    username: esteban  # Cambiado el nombre de usuario
-    password: gc999  # Cambiada la contraseña
-    driver-class-name: oracle.jdbc.OracleDriver  # Cambiado el nombre del controlador
+    url: jdbc:oracle:thin:@localhost:1521/xepdb1 # Cambiado el URL para Oracle
+    username: esteban # Cambiado el nombre de usuario
+    password: gc999 # Cambiada la contraseña
+    driver-class-name: oracle.jdbc.OracleDriver # Cambiado el nombre del controlador
 
     hikari:
       idle-timeout: 10000
