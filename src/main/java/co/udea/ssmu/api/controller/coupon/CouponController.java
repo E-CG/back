@@ -24,7 +24,6 @@ public class CouponController {
     @Autowired
     private Messages messages;
 
-
     // Crear cupón
     @PostMapping(path = "/create")
     @Operation(summary = "Permite crear un cupón")
