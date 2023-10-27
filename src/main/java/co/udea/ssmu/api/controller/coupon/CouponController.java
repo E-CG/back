@@ -13,16 +13,16 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping(path = "/coupons")
+@RequestMapping("/coupons")
 public class CouponController {
     @Autowired
     private CouponFacade couponFacade;
     @Autowired
     private Messages messages;
 
-    @PostMapping(path = "/create")
+    @PostMapping("/create")
     @Operation(summary = "Permite crear un cupón")
-    public ResponseEntity<String> createCoupon(@RequestBody CouponDTO couponDTO) {
+    public ResponseEntity<String> createCoupon(@Valid @RequestBody CouponDTO couponDTO) {
         try {
             couponFacade.createCoupon(couponDTO);
             return ResponseEntity.ok(messages.get("coupon.create.successful"));
@@ -32,7 +32,7 @@ public class CouponController {
     }
 
     // Editar cupón
-    @PutMapping(path = "/update")
+    @PutMapping("/update")
     @Operation(summary = "Permite actualizar los datos de un cupón")
     public ResponseEntity<StandardResponse<CouponDTO>> update(@Valid @RequestBody CouponDTO coupon) {
         return ResponseEntity.ok(new StandardResponse<>(

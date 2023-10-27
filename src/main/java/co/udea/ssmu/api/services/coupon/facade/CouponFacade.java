@@ -28,12 +28,14 @@ public class CouponFacade {
         LocalDate today = LocalDate.now();
         if (strategyDTO.getStartDate().isAfter(today)) {
             // Si la fecha de inicio es posterior al día de hoy,
+            strategyDTO.setIsActive(false);
             couponDTO.setStatus(CouponStatus.INACTIVO);
         } else if (strategyDTO.getEndDate().isBefore(today)){
             // Si la fecha de fin es anterior al día de hoy, establecer el estado como Caducado
             couponDTO.setStatus(CouponStatus.CADUCADO);
         }else{
             // Si la fecha de inicio es hoy o anterior, establecer el estado como Activo
+            strategyDTO.setIsActive(true);
             couponDTO.setStatus(CouponStatus.ACTIVO);
         }
         
