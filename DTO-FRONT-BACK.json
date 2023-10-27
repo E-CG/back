@@ -37,7 +37,6 @@
         "minValue": "Valor mínimo de compra para aplicar el cupón (en pesos)",
         "amount": "Cantidad de cupones disponibles",
         "city": "Ciudad del cupón",
-        "amountAvailable": "Cantidad de cupones disponibles",
         "status": "Estado del cupón (0: Inactivo | 1: Activo | 2: Caducado | 3: Usado)"
       },
       "http": {
