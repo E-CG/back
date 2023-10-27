@@ -13,7 +13,7 @@
         "amount": "Cantidad de cupones disponibles",
         "city": "Ciudad del cupón"
       },
-      "servidor [Lo que le debemos dar al cliente]": {
+      "servidor [Lo que le debemos dar al front]": {
         "message": "Mensaje del resultado de la operación",
         "error": "Error al crear el cupón"
       },
