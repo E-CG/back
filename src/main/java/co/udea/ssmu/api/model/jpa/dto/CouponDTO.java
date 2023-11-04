@@ -6,13 +6,9 @@ import lombok.*;
 
 @Getter
 @Setter
-<<<<<<< HEAD
-public class CouponDTO {
-=======
 public class CouponDTO{
     private long id_coupon;
-
->>>>>>> 03ef6cdca11fa684e2aec62710d7d97a90bbd006
+    
     private String code;
 
     @NotNull(message = "Falta la cantidad de cupones")

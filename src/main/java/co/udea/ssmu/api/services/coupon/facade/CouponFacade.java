@@ -1,24 +1,15 @@
 package co.udea.ssmu.api.services.coupon.facade;
 
 import java.time.LocalDate;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import co.udea.ssmu.api.model.jpa.dto.CouponDTO;
 import co.udea.ssmu.api.model.jpa.dto.StrategyDTO;
-<<<<<<< HEAD
 import co.udea.ssmu.api.model.jpa.mapper.ICouponMapper;
 import co.udea.ssmu.api.model.jpa.model.Coupon;
 import co.udea.ssmu.api.services.coupon.service.CouponService;
 import co.udea.ssmu.api.utils.common.CouponCodeBuilder;
 import co.udea.ssmu.api.utils.common.CouponStatusEnum;
-=======
-import co.udea.ssmu.api.model.jpa.mapper.coupon.CouponMapper;
-import co.udea.ssmu.api.model.jpa.model.coupon.Coupon;
-import co.udea.ssmu.api.services.coupon.service.CouponService;
-import co.udea.ssmu.api.utils.CouponBuilder;
-import co.udea.ssmu.api.utils.CouponStatus;
->>>>>>> 03ef6cdca11fa684e2aec62710d7d97a90bbd006
 import jakarta.transaction.Transactional;
 
 @Service
@@ -38,7 +29,6 @@ public class CouponFacade {
 
         LocalDate today = LocalDate.now();
         if (strategyDTO.getStartDate().isAfter(today)) {
-<<<<<<< HEAD
             strategyDTO.setIsActive(false);
             // Si la fecha de inicio es posterior al día de hoy
             couponDTO.setStatus(CouponStatusEnum.INACTIVO);
@@ -50,19 +40,6 @@ public class CouponFacade {
             strategyDTO.setIsActive(true);
             // Si la fecha de inicio es hoy o anterior, establecer el estado como Activo
             couponDTO.setStatus(CouponStatusEnum.ACTIVO);
-=======
-            // Si la fecha de inicio es posterior al día de hoy,
-            strategyDTO.setIsActive(false);
-            couponDTO.setStatus(CouponStatus.INACTIVO);
-        } else if (strategyDTO.getEndDate().isBefore(today)){
-            // Si la fecha de fin es anterior al día de hoy, establecer el estado como Caducado
-            strategyDTO.setIsActive(false);
-            couponDTO.setStatus(CouponStatus.CADUCADO);
-        }else{
-            // Si la fecha de inicio es hoy o anterior, establecer el estado como Activo
-            strategyDTO.setIsActive(true);
-            couponDTO.setStatus(CouponStatus.ACTIVO);
->>>>>>> 03ef6cdca11fa684e2aec62710d7d97a90bbd006
         }
         Coupon coupon = couponMapper.toEntity(couponDTO);
         return couponMapper.toDto(couponService.saveCoupon(coupon));
