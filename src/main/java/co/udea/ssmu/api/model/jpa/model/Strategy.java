@@ -2,8 +2,11 @@ package co.udea.ssmu.api.model.jpa.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+<<<<<<< HEAD:src/main/java/co/udea/ssmu/api/model/jpa/model/Strategy.java
 import java.util.List;
 import co.udea.ssmu.api.model.jpa.model.User;
+=======
+>>>>>>> 03ef6cdca11fa684e2aec62710d7d97a90bbd006:src/main/java/co/udea/ssmu/api/model/jpa/model/strategy/Strategy.java
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -50,8 +53,11 @@ public class Strategy implements Serializable {
 
     @Column(name = "descuento_maximo")
     private int maxDiscount;
+<<<<<<< HEAD:src/main/java/co/udea/ssmu/api/model/jpa/model/Strategy.java
 
     //
     @ManyToMany(mappedBy = "strategies")
     private List<User> users;
+=======
+>>>>>>> 03ef6cdca11fa684e2aec62710d7d97a90bbd006:src/main/java/co/udea/ssmu/api/model/jpa/model/strategy/Strategy.java
 }
