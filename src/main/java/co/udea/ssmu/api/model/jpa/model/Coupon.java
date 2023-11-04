@@ -1,6 +1,7 @@
-package co.udea.ssmu.api.model.jpa.model.coupon;
+package co.udea.ssmu.api.model.jpa.model;
 
-import co.udea.ssmu.api.model.jpa.model.strategy.Strategy;
+import java.io.Serializable;
+import co.udea.ssmu.api.model.jpa.model.Strategy;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -12,15 +13,11 @@ import lombok.*;
 @Setter
 @ToString
 @Entity
-@Table(name = "cupon")
-public class Coupon {
+@Table(name = "cupon", schema = "esteban")
+public class Coupon implements Serializable {
     @Id
-    @Column(name = "id_cupon")
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id_coupon;
-
     @Column(name = "codigo", nullable = false, unique = true)
-    private @NonNull String code;
+    private String code;
 
     @NotNull
     @Column(name = "estado_cupon")
@@ -30,7 +27,7 @@ public class Coupon {
     @Column(name = "cantidad_disponible")
     private int amount;
 
-    @ManyToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_estrategia")
     private Strategy strategy;
 }

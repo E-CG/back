@@ -1,11 +1,11 @@
-package co.udea.ssmu.api.utils;
+package co.udea.ssmu.api.utils.common;
 
 import java.util.HashSet;
 import java.util.Random;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CouponBuilder {
+public class CouponCodeBuilder {
     Random random = new Random();
 
     public String buildCodeCoupon(String name) {

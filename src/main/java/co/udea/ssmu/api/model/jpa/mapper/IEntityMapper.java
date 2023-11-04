@@ -3,7 +3,7 @@ package co.udea.ssmu.api.model.jpa.mapper;
 import java.util.List;
 import java.util.Set;
 
-public interface EntityMapper<D, E> {
+public interface IEntityMapper<D, E> {
 
     E toEntity(D dto);
 

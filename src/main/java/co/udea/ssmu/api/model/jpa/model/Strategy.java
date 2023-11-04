@@ -1,8 +1,9 @@
-package co.udea.ssmu.api.model.jpa.model.strategy;
+package co.udea.ssmu.api.model.jpa.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import co.udea.ssmu.api.model.jpa.model.coupon.Coupon;
+import java.util.List;
+import co.udea.ssmu.api.model.jpa.model.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,7 +14,7 @@ import lombok.*;
 @Setter
 @ToString
 @Entity
-@Table(name = "estrategia")
+@Table(name = "estrategia", schema = "esteban")
 public class Strategy implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,11 +27,11 @@ public class Strategy implements Serializable {
     @Column(name = "descripcion")
     private @NonNull String description;
 
-    @Column(name = "porcentaje_descuento")
+    @Column(name = "porcentaje_descuento", nullable = true)
     private int discountPercentage;
 
     @Column(name = "estado")
-    private @NonNull Boolean isActive;
+    private Boolean isActive;
 
     @Column(name = "ciudad")
     private @NonNull String city;
@@ -50,7 +51,7 @@ public class Strategy implements Serializable {
     @Column(name = "descuento_maximo")
     private int maxDiscount;
 
-    @ManyToOne
-    @JoinColumn(name = "id_cupon")
-    private Coupon coupon;
+    //
+    @ManyToMany(mappedBy = "strategies")
+    private List<User> users;
 }

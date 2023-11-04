@@ -44,6 +44,4 @@ public class StrategyDTO {
 
     @NotEmpty(message = "Falta la ciudad")
     private String city;
-
-    private CouponDTO coupon;
 }

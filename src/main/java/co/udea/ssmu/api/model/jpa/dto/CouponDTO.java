@@ -1,13 +1,12 @@
 package co.udea.ssmu.api.model.jpa.dto;
 
-import co.udea.ssmu.api.utils.CouponStatus;
+import co.udea.ssmu.api.utils.common.CouponStatusEnum;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
 @Getter
 @Setter
-public class CouponDTO{
-    @NotNull(message = "El código del cupón no puede ser nulo")
+public class CouponDTO {
     private String code;
 
     @NotNull(message = "Falta la cantidad de cupones")
@@ -15,7 +14,7 @@ public class CouponDTO{
     @Max(value = 100, message = "La cantidad no puede ser mayor a 100")
     private int amount;
 
-    private CouponStatus status;
-    
-    private StrategyDTO idStrategy;
+    private CouponStatusEnum status;
+
+    private StrategyDTO strategy;
 }
