@@ -2,9 +2,7 @@ package co.udea.ssmu.api.model.jpa.dto;
 
 import java.time.LocalDate;
 import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
-
 import co.udea.ssmu.api.model.jpa.model.User;
 import jakarta.validation.constraints.*;
 import lombok.*;
