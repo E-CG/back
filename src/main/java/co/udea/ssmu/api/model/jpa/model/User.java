@@ -1,7 +1,6 @@
 package co.udea.ssmu.api.model.jpa.model;
 
 import java.util.List;
-import co.udea.ssmu.api.model.jpa.model.Strategy;
 import jakarta.persistence.*;
 import lombok.*;
 
