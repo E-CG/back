@@ -11,7 +11,7 @@ spring:
           batch_size: 50
           lob:
             non_contextual_creation: true
-        default_schema: public
+        default_schema: esteban
         temp:
           use_jdbc_metadata_defaults: false
 

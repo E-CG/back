@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import co.udea.ssmu.api.model.jpa.model.coupon.Coupon;
 
 @Repository
-public interface ICouponRepository extends JpaRepository<Coupon, Long>{
+public interface ICouponRepository extends JpaRepository<Coupon, String>{
 /*     //Cuenta la cantidad de cupones activos
     @Query("SELECT COUNT(c) FROM Coupon c WHERE c.status = Activo")
     long countActiveCoupons(); */

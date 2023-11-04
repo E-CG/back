@@ -3,7 +3,6 @@ package co.udea.ssmu.api.services.coupon.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import co.udea.ssmu.api.model.jpa.model.coupon.Coupon;
 import co.udea.ssmu.api.model.jpa.repository.coupon.ICouponRepository;
 
@@ -18,7 +17,7 @@ public class CouponService {
     }
 
     public Coupon updateCoupon(Coupon coupon){
-        Coupon existCoupon = couponRepository.findById(coupon.getId_coupon()).orElse(null);
+        Coupon existCoupon = couponRepository.findById(coupon.getCode()).orElse(null);
         existCoupon.setCode(coupon.getCode());
         existCoupon.setAmount(coupon.getAmount());
         existCoupon.setStatus(coupon.getStatus());

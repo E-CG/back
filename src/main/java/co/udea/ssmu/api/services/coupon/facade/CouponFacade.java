@@ -1,7 +1,6 @@
 package co.udea.ssmu.api.services.coupon.facade;
 
 import java.time.LocalDate;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import co.udea.ssmu.api.model.jpa.dto.CouponDTO;
@@ -25,21 +24,21 @@ public class CouponFacade {
 
     public CouponDTO createCoupon(CouponDTO couponDTO) {
         // Creando el codigo del cupón
-        StrategyDTO strategyDTO = couponDTO.getIdStrategy();
+        StrategyDTO strategyDTO = couponDTO.getStrategy();
         couponDTO.setCode(couponBuilder.buildCodeCoupon(strategyDTO.getName()));
 
         LocalDate today = LocalDate.now();
         if (strategyDTO.getStartDate().isAfter(today)) {
-            // Si la fecha de inicio es posterior al día de hoy,
             strategyDTO.setIsActive(false);
+            // Si la fecha de inicio es posterior al día de hoy
             couponDTO.setStatus(CouponStatus.INACTIVO);
-        } else if (strategyDTO.getEndDate().isBefore(today)){
-            // Si la fecha de fin es anterior al día de hoy, establecer el estado como Caducado
+        } else if (strategyDTO.getEndDate().isBefore(today)) {
             strategyDTO.setIsActive(false);
+            // Si la fecha de fin es anterior al día de hoy, establecer el estado como Caducado
             couponDTO.setStatus(CouponStatus.CADUCADO);
-        }else{
-            // Si la fecha de inicio es hoy o anterior, establecer el estado como Activo
+        } else {
             strategyDTO.setIsActive(true);
+            // Si la fecha de inicio es hoy o anterior, establecer el estado como Activo
             couponDTO.setStatus(CouponStatus.ACTIVO);
         }
         Coupon coupon = couponMapper.toEntity(couponDTO);
