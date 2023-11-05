@@ -34,7 +34,8 @@ public class CouponFacade {
             couponDTO.setStatus(CouponStatusEnum.INACTIVO);
         } else if (strategyDTO.getEndDate().isBefore(today)) {
             strategyDTO.setIsActive(false);
-            // Si la fecha de fin es anterior al día de hoy, establecer el estado como Caducado
+            // Si la fecha de fin es anterior al día de hoy, establecer el estado como
+            // Caducado
             couponDTO.setStatus(CouponStatusEnum.CADUCADO);
         } else {
             strategyDTO.setIsActive(true);
@@ -45,7 +46,12 @@ public class CouponFacade {
         return couponMapper.toDto(couponService.saveCoupon(coupon));
     }
 
-    public CouponDTO update(CouponDTO coupon) {
-        return couponMapper.toDto(couponService.updateCoupon(couponMapper.toEntity(coupon)));
+    public CouponDTO editCoupon(CouponDTO updatedCoupon) {
+        Coupon coupon = couponMapper.toEntity(updatedCoupon);
+        return couponMapper.toDto(couponService.editCoupon(coupon));
+    }
+
+    public CouponDTO findByCode(String code) {
+        return couponMapper.toDto(couponService.findById(code));
     }
 }

@@ -1,15 +1,20 @@
 package co.udea.ssmu.api.controller;
 
+import java.util.HashSet;
+import java.util.Set;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import co.udea.ssmu.api.model.jpa.dto.CouponDTO;
+import co.udea.ssmu.api.model.jpa.model.Coupon;
 import co.udea.ssmu.api.services.coupon.facade.CouponFacade;
 import co.udea.ssmu.api.utils.common.*;
 import co.udea.ssmu.api.utils.exception.DataDuplicatedException;
-import co.udea.ssmu.api.utils.exception.DataNotFoundException;
 
 @RestController
 @RequestMapping("/coupons")
@@ -29,31 +34,34 @@ public class CouponController {
                     messages.get("coupon.create.successful")));
         } catch (DataDuplicatedException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(
-                new StandardResponse<>(
-                    StandardResponse.StatusStandardResponse.ERROR,
-                    messages.get("coupon.save.duplicate.code")));
+                    new StandardResponse<>(
+                            StandardResponse.StatusStandardResponse.ERROR,
+                            messages.get("coupon.save.duplicate.code")));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-            .body(new StandardResponse<>(
-                StandardResponse.StatusStandardResponse.ERROR,
-                messages.get("coupon.save.data.invalid")));
+                    .body(new StandardResponse<>(
+                            StandardResponse.StatusStandardResponse.ERROR,
+                            messages.get("coupon.save.data.invalid")));
         }
     }
 
     @Operation(summary = "Permite actualizar los datos de un cupón")
-    @PutMapping("/edit")
-    public ResponseEntity<StandardResponse<CouponDTO>> updateCoupon(@Valid @RequestBody CouponDTO couponDTO) {
-        try {
-            CouponDTO updatedCoupon = couponFacade.update(couponDTO);
-            return ResponseEntity.ok(new StandardResponse<>(
-                    StandardResponse.StatusStandardResponse.OK,
-                    messages.get("coupon.update.successful"),
-                    updatedCoupon));
-        } catch (DataNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new StandardResponse<>(
-                            StandardResponse.StatusStandardResponse.ERROR,
-                            messages.get("coupon.update.does.not.exist")));
+    @PatchMapping("/edit/{code}")
+    public ResponseEntity<StandardResponse<String>> editCoupon(@PathVariable String code,
+            @RequestBody CouponDTO updatedCouponDTO) {
+        CouponDTO existingCoupon = couponFacade.findByCode(code);
+
+        // Copiamos los atributos actualizados al cupón existente
+        existingCoupon.setAmount(updatedCouponDTO.getAmount());
+        existingCoupon.setCode(updatedCouponDTO.getCode());
+        if (updatedCouponDTO.getStrategy() != null) {
+            existingCoupon.getStrategy().setDescription(updatedCouponDTO.getStrategy().getDescription());
+            existingCoupon.getStrategy().setStartDate(updatedCouponDTO.getStrategy().getStartDate());
         }
+        couponFacade.editCoupon(existingCoupon);
+
+        return ResponseEntity.ok(new StandardResponse<>(
+                StandardResponse.StatusStandardResponse.OK,
+                messages.get("coupon.update.successful")));
     }
 }
