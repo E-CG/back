@@ -31,7 +31,7 @@ public class CouponController {
             couponFacade.createCoupon(couponDTO);
             return ResponseEntity.ok(new StandardResponse<>(
                 StandardResponse.StatusStandardResponse.OK,
-                messages.get("coupon.create.successful")));
+                messages.get("coupon.save.successful")));
         } catch (DataDuplicatedException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(new StandardResponse<>(
                 messages.get("coupon.save.duplicate.code"), 
