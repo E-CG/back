@@ -1,5 +1,7 @@
 package co.udea.ssmu.api.controller;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -42,17 +44,9 @@ public class CouponController {
     @Operation(summary = "Permite actualizar los datos de un cupón")
     @PatchMapping("/edit/{code}")
     public ResponseEntity<StandardResponse<String>> editCoupon(@PathVariable String code,
-            @RequestBody CouponDTO updatedCouponDTO) {
+    @RequestBody Map<String, Object> updates) {
         CouponDTO existingCoupon = couponFacade.findByCode(code);
-
-        // Copiamos los atributos actualizados al cupón existente
-        existingCoupon.setAmount(updatedCouponDTO.getAmount());
-        existingCoupon.setCode(updatedCouponDTO.getCode());
-        if (updatedCouponDTO.getStrategy() != null) {
-            existingCoupon.getStrategy().setDescription(updatedCouponDTO.getStrategy().getDescription());
-            existingCoupon.getStrategy().setStartDate(updatedCouponDTO.getStrategy().getStartDate());
-        }
-        couponFacade.editCoupon(existingCoupon);
+        couponFacade.updateCouponFields(existingCoupon, updates);
 
         return ResponseEntity.ok(new StandardResponse<>(
                 StandardResponse.StatusStandardResponse.OK,
