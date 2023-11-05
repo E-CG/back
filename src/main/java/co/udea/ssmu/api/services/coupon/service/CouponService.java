@@ -1,5 +1,6 @@
 package co.udea.ssmu.api.services.coupon.service;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +15,14 @@ public class CouponService {
 
     public Coupon saveCoupon(Coupon coupon) {
         return couponRepository.save(coupon);
+    }
+
+    public List<Coupon> findAll(int limit, int offset) {
+        if(limit != 0 && offset != 0 || limit > 0 && offset > 0){
+            return couponRepository.findAllWithQueryParam(limit, offset);
+        }else{
+            return couponRepository.findAll();
+        }
     }
 
     public Coupon editCoupon(Coupon coupon){

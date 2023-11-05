@@ -1,5 +1,6 @@
 package co.udea.ssmu.api.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,35 @@ public class CouponController {
                             StandardResponse.StatusStandardResponse.ERROR,
                             messages.get("coupon.save.data.invalid")));
         }
+    }
+
+    @Operation(summary = "Permite obtener todos los cupones")
+    @GetMapping("/all")
+    public ResponseEntity<StandardResponse<List<CouponDTO>>> getAllCoupons(
+            @RequestParam(required = false) Integer limit,
+            @RequestParam(required = false) Integer offset) {
+
+        List<CouponDTO> coupons = couponFacade.findAllCoupons(limit, offset);
+        return ResponseEntity.ok(new StandardResponse<>(
+                StandardResponse.StatusStandardResponse.OK,
+                messages.get("coupon.get.successful"),
+                coupons));
+    }
+
+    @Operation(summary = "Permite obtener un cupón por su código")
+    @GetMapping("/{code}")
+    public ResponseEntity<StandardResponse<CouponDTO>> getCouponByCode(@PathVariable String code) {
+        CouponDTO coupon = couponFacade.findByCode(code);
+        if (coupon == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new StandardResponse<>(
+                    StandardResponse.StatusStandardResponse.ERROR,
+                    messages.get("coupon.not.found")));
+        }
+
+        return ResponseEntity.ok(new StandardResponse<>(
+                StandardResponse.StatusStandardResponse.OK,
+                messages.get("coupon.get.successful"),
+                coupon));
     }
 
     @Operation(summary = "Permite actualizar los datos de un cupón")
