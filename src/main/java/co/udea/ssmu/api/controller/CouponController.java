@@ -11,6 +11,7 @@ import co.udea.ssmu.api.model.jpa.dto.CouponDTO;
 import co.udea.ssmu.api.services.coupon.facade.CouponFacade;
 import co.udea.ssmu.api.utils.common.*;
 import co.udea.ssmu.api.utils.exception.DataDuplicatedException;
+import co.udea.ssmu.api.utils.exception.DataNotFoundException;
 
 @RestController
 @RequestMapping("/coupons")
@@ -44,9 +45,25 @@ public class CouponController {
     @Operation(summary = "Permite actualizar los datos de un cupón")
     @PatchMapping("/edit/{code}")
     public ResponseEntity<StandardResponse<String>> editCoupon(@PathVariable String code,
-    @RequestBody Map<String, Object> updates) {
+            @RequestBody Map<String, Object> updates) {
         CouponDTO existingCoupon = couponFacade.findByCode(code);
-        couponFacade.updateCouponFields(existingCoupon, updates);
+        if (existingCoupon == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new StandardResponse<>(
+                    StandardResponse.StatusStandardResponse.ERROR,
+                    messages.get("coupon.not.found")));
+        }
+
+        try {
+            couponFacade.updateCouponFields(existingCoupon, updates);
+        } catch (DataNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new StandardResponse<>(
+                    StandardResponse.StatusStandardResponse.ERROR,
+                    messages.get("coupon.update.data.invalid")));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new StandardResponse<>(
+                    StandardResponse.StatusStandardResponse.ERROR,
+                    messages.get("coupon.update.error")));
+        }
 
         return ResponseEntity.ok(new StandardResponse<>(
                 StandardResponse.StatusStandardResponse.OK,
