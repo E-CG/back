@@ -6,11 +6,9 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
-@ToString
+@RequiredArgsConstructor
 @Entity
 @Table(name = "cupon", schema = "esteban")
 public class Coupon implements Serializable {
@@ -24,7 +22,7 @@ public class Coupon implements Serializable {
 
     @NotNull
     @Column(name = "cantidad_disponible", nullable = false, length = 3, updatable = true)
-    private int amount;
+    private Integer amount;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_estrategia")

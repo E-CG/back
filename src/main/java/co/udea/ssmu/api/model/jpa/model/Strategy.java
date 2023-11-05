@@ -7,11 +7,9 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
-@ToString
+@RequiredArgsConstructor
 @Entity
 @Table(name = "estrategia", schema = "esteban")
 public class Strategy implements Serializable {

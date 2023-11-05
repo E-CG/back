@@ -9,7 +9,7 @@ import lombok.*;
 
 @Getter
 @Setter
-public class StrategyDTO {
+public class StrategyDTO{
     private long idStrategy;
 
     @NotEmpty(message = "Falta el nombre de la estrategia")
@@ -32,7 +32,7 @@ public class StrategyDTO {
 
     @Min(value = 0, message = "El valor de descuento no puede ser negativo")
     @Max(value = 50000, message = "El valor de descuento no puede ser mayor a 50,000")
-    private int discountValue;
+    private Integer discountValue;
 
     @Min(value = 5000, message = "El valor mínimo debe ser al menos 5000")
     @Max(value = 100000, message = "El valor mínimo no puede ser mayor a 100,000")
