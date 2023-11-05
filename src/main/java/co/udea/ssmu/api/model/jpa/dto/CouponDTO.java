@@ -12,8 +12,9 @@ public class CouponDTO{
     @NotNull(message = "Falta la cantidad de cupones")
     @Min(value = 1, message = "La cantidad debe ser como mínimo 1")
     @Max(value = 100, message = "La cantidad no puede ser mayor a 100")
-    private int amount;
+    private Integer amount;
 
+    @NotNull(message = "Falta el estado del cupón")
     private CouponStatusEnum status;
     
     private StrategyDTO strategy;

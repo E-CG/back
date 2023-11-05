@@ -1,5 +1,6 @@
 package co.udea.ssmu.api.model.jpa.model;
 
+import java.io.Serializable;
 import java.util.List;
 import jakarta.persistence.*;
 import lombok.*;
@@ -12,7 +13,7 @@ import lombok.*;
 @ToString
 @Entity
 @Table(name = "usuario", schema = "esteban")
-public class User {
+public class User implements Serializable{
     @Id
     @Column(name = "cedula")
     private long document;

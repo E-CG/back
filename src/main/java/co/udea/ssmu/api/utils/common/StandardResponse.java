@@ -1,10 +1,15 @@
 package co.udea.ssmu.api.utils.common;
 
-public class StandardResponse<T> {
+import com.fasterxml.jackson.annotation.JsonProperty;
 
+public class StandardResponse<T> {
+    @JsonProperty("status")
     private int status;
+    @JsonProperty("message")
     private String message;
+    @JsonProperty("dev_message")
     private String devMesssage;
+    @JsonProperty("body")
     private T body;
 
     public StandardResponse() {
