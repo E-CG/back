@@ -1,17 +1,11 @@
 package co.udea.ssmu.api.controller;
 
-import java.util.HashSet;
-import java.util.Set;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import co.udea.ssmu.api.model.jpa.dto.CouponDTO;
-import co.udea.ssmu.api.model.jpa.model.Coupon;
 import co.udea.ssmu.api.services.coupon.facade.CouponFacade;
 import co.udea.ssmu.api.utils.common.*;
 import co.udea.ssmu.api.utils.exception.DataDuplicatedException;
