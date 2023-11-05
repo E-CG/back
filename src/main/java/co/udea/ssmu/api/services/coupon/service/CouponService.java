@@ -16,11 +16,11 @@ public class CouponService {
         return couponRepository.save(coupon);
     }
 
-    public Coupon updateCoupon(Coupon coupon){
-        Coupon existCoupon = couponRepository.findById(coupon.getCode()).orElse(null);
-        existCoupon.setCode(coupon.getCode());
-        existCoupon.setAmount(coupon.getAmount());
-        existCoupon.setStatus(coupon.getStatus());
-        return couponRepository.save(existCoupon);
+    public Coupon editCoupon(Coupon coupon){
+        return couponRepository.save(coupon);
+    }
+
+    public Coupon findById(String code) {
+        return couponRepository.findById(code).orElse(null);
     }
 }
