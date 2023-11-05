@@ -5,6 +5,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import co.udea.ssmu.api.model.jpa.dto.CouponDTO;
 import co.udea.ssmu.api.model.jpa.dto.StrategyDTO;
@@ -48,19 +50,22 @@ public class CouponFacade {
         return couponMapper.toDto(couponService.saveCoupon(coupon));
     }
 
-    public List<CouponDTO> findAllCoupons(int limit, int offset) {
-        List<Coupon> coupons = couponService.findAll(limit, offset);
-        return couponMapper.toDto(coupons);
-    }
-    
-    public CouponDTO editCoupon(CouponDTO updatedCoupon) {
-        Coupon coupon = couponMapper.toEntity(updatedCoupon);
-        return couponMapper.toDto(couponService.editCoupon(coupon));
+    public Page<CouponDTO> findWithFilter(Pageable pageable) {
+        return couponService.findWithFilter(pageable).map(couponMapper::toDto);
     }
     
     public CouponDTO findByCode(String code) {
         CouponDTO couponDTO = couponMapper.toDto(couponService.findById(code));
         return couponDTO;
+    }
+
+    public List<CouponDTO> findAll(){
+        return couponMapper.toDto(couponService.findAll());
+    }
+
+    public CouponDTO editCoupon(CouponDTO updatedCoupon) {
+        Coupon coupon = couponMapper.toEntity(updatedCoupon);
+        return couponMapper.toDto(couponService.editCoupon(coupon));
     }
 
     public void updateCouponFields(CouponDTO existingCoupon, Map<String, Object> updates) {

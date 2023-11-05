@@ -2,8 +2,10 @@ package co.udea.ssmu.api.controller;
 
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
@@ -45,15 +47,11 @@ public class CouponController {
 
     @Operation(summary = "Permite obtener todos los cupones")
     @GetMapping("/all")
-    public ResponseEntity<StandardResponse<List<CouponDTO>>> getAllCoupons(
-            @RequestParam(required = false) Integer limit,
-            @RequestParam(required = false) Integer offset) {
-
-        List<CouponDTO> coupons = couponFacade.findAllCoupons(limit, offset);
+    public ResponseEntity<StandardResponse<List<CouponDTO>>> getAllCoupons() {
         return ResponseEntity.ok(new StandardResponse<>(
                 StandardResponse.StatusStandardResponse.OK,
                 messages.get("coupon.get.successful"),
-                coupons));
+                couponFacade.findAll()));
     }
 
     @Operation(summary = "Permite obtener un cupón por su código")
@@ -70,6 +68,18 @@ public class CouponController {
                 StandardResponse.StatusStandardResponse.OK,
                 messages.get("coupon.get.successful"),
                 coupon));
+    }
+
+    @Operation(summary = "Permite obtener todos los cupones")
+    @GetMapping("/all-filter")
+    public ResponseEntity<StandardResponse<Page<CouponDTO>>> getCouponsFiltered(
+            @RequestParam(required = false) Integer limit) {
+
+        Pageable pageable = PageRequest.ofSize(limit);
+        return ResponseEntity.ok(new StandardResponse<>(
+                StandardResponse.StatusStandardResponse.OK,
+                messages.get("coupon.get.successful"),
+                couponFacade.findWithFilter(pageable)));
     }
 
     @Operation(summary = "Permite actualizar los datos de un cupón")
