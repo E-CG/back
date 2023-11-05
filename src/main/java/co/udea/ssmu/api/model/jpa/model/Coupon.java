@@ -15,15 +15,15 @@ import lombok.*;
 @Table(name = "cupon", schema = "esteban")
 public class Coupon implements Serializable {
     @Id
-    @Column(name = "codigo", nullable = false, unique = true)
+    @Column(name = "codigo", nullable = false, unique = true, updatable = true, length = 9)
     private String code;
 
     @NotNull
-    @Column(name = "estado_cupon")
+    @Column(name = "estado_cupon", nullable = false, length = 20)
     private String status;
 
     @NotNull
-    @Column(name = "cantidad_disponible")
+    @Column(name = "cantidad_disponible", nullable = false, length = 3, updatable = true)
     private int amount;
 
     @OneToOne(cascade = CascadeType.ALL)
