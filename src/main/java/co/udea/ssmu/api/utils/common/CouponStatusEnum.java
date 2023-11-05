@@ -14,4 +14,13 @@ public enum CouponStatusEnum {
     public int getCode() {
         return code;
     }
+
+    public static CouponStatusEnum getByCode(int code) {
+        for (CouponStatusEnum status : CouponStatusEnum.values()) {
+            if (status.getCode() == code) {
+                return status;
+            }
+        }
+        throw new IllegalArgumentException("Código de estado de cupón no válido: " + code);
+    }    
 }

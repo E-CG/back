@@ -30,35 +30,40 @@ public class CouponController {
         try {
             couponFacade.createCoupon(couponDTO);
             return ResponseEntity.ok(new StandardResponse<>(
-                    StandardResponse.StatusStandardResponse.OK,
-                    messages.get("coupon.create.successful")));
+                StandardResponse.StatusStandardResponse.OK,
+                messages.get("coupon.create.successful")));
         } catch (DataDuplicatedException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(
-                    new StandardResponse<>(
-                            StandardResponse.StatusStandardResponse.ERROR,
-                            messages.get("coupon.save.duplicate.code")));
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new StandardResponse<>(
+                messages.get("coupon.save.duplicate.code"), 
+                StandardResponse.StatusStandardResponse.ERROR));
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new StandardResponse<>(
-                            StandardResponse.StatusStandardResponse.ERROR,
-                            messages.get("coupon.save.data.invalid")));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new StandardResponse<>(
+                messages.get("coupon.save.data.invalid"),
+                StandardResponse.StatusStandardResponse.ERROR));
         }
     }
 
     @Operation(summary = "Permite obtener todos los cupones")
     @GetMapping("/all")
     public ResponseEntity<StandardResponse<List<CouponDTO>>> getAllCoupons() {
-        return ResponseEntity.ok(new StandardResponse<>(
+        try {
+            List<CouponDTO> coupons = couponFacade.findAll();
+            return ResponseEntity.ok(new StandardResponse<>(
                 StandardResponse.StatusStandardResponse.OK,
                 messages.get("coupon.get.successful"),
-                couponFacade.findAll()));
+                coupons));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new StandardResponse<>(
+                StandardResponse.StatusStandardResponse.ERROR,
+                messages.get("coupon.get.error")));
+        }
     }
 
     @Operation(summary = "Permite obtener un cupón por su código")
     @GetMapping("/{code}")
     public ResponseEntity<StandardResponse<CouponDTO>> getCouponByCode(@PathVariable String code) {
-        CouponDTO coupon = couponFacade.findByCode(code);
-        if (coupon == null) {
+        CouponDTO couponDTO = couponFacade.findByCode(code);
+        if (couponDTO == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new StandardResponse<>(
                     StandardResponse.StatusStandardResponse.ERROR,
                     messages.get("coupon.not.found")));
@@ -67,14 +72,13 @@ public class CouponController {
         return ResponseEntity.ok(new StandardResponse<>(
                 StandardResponse.StatusStandardResponse.OK,
                 messages.get("coupon.get.successful"),
-                coupon));
+                couponDTO));
     }
 
     @Operation(summary = "Permite obtener todos los cupones")
     @GetMapping("/all-filter")
     public ResponseEntity<StandardResponse<Page<CouponDTO>>> getCouponsFiltered(
             @RequestParam(required = false) Integer limit) {
-
         Pageable pageable = PageRequest.ofSize(limit);
         return ResponseEntity.ok(new StandardResponse<>(
                 StandardResponse.StatusStandardResponse.OK,
@@ -88,7 +92,7 @@ public class CouponController {
             @RequestBody Map<String, Object> updates) {
         CouponDTO existingCoupon = couponFacade.findByCode(code);
         if (existingCoupon == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new StandardResponse<>(
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new StandardResponse<>(
                     StandardResponse.StatusStandardResponse.ERROR,
                     messages.get("coupon.not.found")));
         }
