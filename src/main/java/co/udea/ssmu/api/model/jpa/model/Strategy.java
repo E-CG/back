@@ -17,37 +17,37 @@ import lombok.*;
 public class Strategy implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_estrategia")
+    @Column(name = "id_estrategia", length = 3, nullable = false, unique = true, updatable = false)
     private long idStrategy;
 
-    @Column(name = "nombre")
+    @Column(name = "nombre", nullable = false, length = 50)
     private @NonNull String name;
 
-    @Column(name = "descripcion")
+    @Column(name = "descripcion", nullable = false, length = 50)
     private @NonNull String description;
 
-    @Column(name = "porcentaje_descuento", nullable = true)
+    @Column(name = "porcentaje_descuento", nullable = false, length = 3)
     private int discountPercentage;
 
-    @Column(name = "estado")
+    @Column(name = "estado", nullable = false, length = 1)
     private Boolean isActive;
 
-    @Column(name = "ciudad")
+    @Column(name = "ciudad", nullable = false, length = 50)
     private @NonNull String city;
 
-    @Column(name = "fecha_inicio")
+    @Column(name = "fecha_inicio", nullable = false)
     private @NonNull LocalDate startDate;
 
-    @Column(name = "fecha_fin")
+    @Column(name = "fecha_fin", nullable = false)
     private @NonNull LocalDate endDate;
 
-    @Column(name = "valor_descuento")
+    @Column(name = "valor_descuento", nullable = true, length = 5)
     private int discountValue;
 
-    @Column(name = "valor_minimo", nullable = false)
+    @Column(name = "valor_minimo", nullable = true, length = 5)
     private int minValue;
 
-    @Column(name = "descuento_maximo")
+    @Column(name = "descuento_maximo", nullable = false, length = 5)
     private int maxDiscount;
 
     //

@@ -1,6 +1,8 @@
 package co.udea.ssmu.api.services.coupon.facade;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import co.udea.ssmu.api.model.jpa.dto.CouponDTO;
@@ -34,8 +36,7 @@ public class CouponFacade {
             couponDTO.setStatus(CouponStatusEnum.INACTIVO);
         } else if (strategyDTO.getEndDate().isBefore(today)) {
             strategyDTO.setIsActive(false);
-            // Si la fecha de fin es anterior al día de hoy, establecer el estado como
-            // Caducado
+            // Si la fecha de fin es anterior al día de hoy, establecer el estado como Caducado
             couponDTO.setStatus(CouponStatusEnum.CADUCADO);
         } else {
             strategyDTO.setIsActive(true);
@@ -46,12 +47,34 @@ public class CouponFacade {
         return couponMapper.toDto(couponService.saveCoupon(coupon));
     }
 
+    
     public CouponDTO editCoupon(CouponDTO updatedCoupon) {
         Coupon coupon = couponMapper.toEntity(updatedCoupon);
         return couponMapper.toDto(couponService.editCoupon(coupon));
     }
-
+    
     public CouponDTO findByCode(String code) {
         return couponMapper.toDto(couponService.findById(code));
+    }
+
+    public void updateCouponFields(CouponDTO existingCoupon, Map<String, Object> updates) {
+        if (updates.containsKey("amount")) {
+            existingCoupon.setAmount((Integer) updates.get("amount"));
+        }if (updates.containsKey("code")) {
+            existingCoupon.setCode((String) updates.get("code"));
+        }
+        if (updates.containsKey("strategy")) {
+            Map<String, Object> strategyUpdates = (Map<String, Object>) updates.get("strategy");
+            StrategyDTO existingStrategy = existingCoupon.getStrategy();
+            if (strategyUpdates.containsKey("description")) {
+                existingStrategy.setDescription((String) strategyUpdates.get("description"));
+            }
+            if (strategyUpdates.containsKey("startDate")) {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                LocalDate startDate = LocalDate.parse((String) strategyUpdates.get("startDate"), formatter);
+                existingStrategy.setStartDate(startDate);
+            }
+        }
+        editCoupon(existingCoupon);
     }
 }
