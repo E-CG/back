@@ -1,6 +1,6 @@
 package co.udea.ssmu.api.model.jpa.dto;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import co.udea.ssmu.api.model.jpa.model.User;
@@ -20,11 +20,11 @@ public class StrategyDTO{
 
     @NotNull(message = "Falta la fecha de inicio")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDate startDate;
+    private LocalDateTime startDate;
 
     @NotNull(message = "Falta la fecha de finalización")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDate endDate;
+    private LocalDateTime endDate;
 
     @Min(value = 1, message = "El porcentaje de descuento debe ser mayor que 0")
     @Max(value = 100, message = "El porcentaje de descuento no puede ser mayor al 100%")
