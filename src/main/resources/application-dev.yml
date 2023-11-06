@@ -5,15 +5,15 @@ spring:
       ddl-auto: update
     properties:
       hibernate:
-        order_inserts: true
+        order-inserts: true
         dialect: org.hibernate.dialect.Oracle12cDialect
         jdbc:
-          batch_size: 50
+          batch-size: 50
           lob:
-            non_contextual_creation: true
-        default_schema: esteban
+            non-contextual-creation: true
+        default-schema: esteban
         temp:
-          use_jdbc_metadata_defaults: false
+          use-jdbc-metadata-defaults: false
 
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
@@ -37,7 +37,7 @@ ssmu-api:
 logging:
   level:
     root: DEBUG
-    org.springframework: DEBUG
+    org-springframework: DEBUG
 
 # Server properties
 server:
