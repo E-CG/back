@@ -1,6 +1,6 @@
 package co.udea.ssmu.api.services.coupon.facade;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +32,7 @@ public class CouponFacade {
         StrategyDTO strategyDTO = couponDTO.getStrategy();
         couponDTO.setCode(couponBuilder.buildCodeCoupon(strategyDTO.getName()));
 
-        LocalDate today = LocalDate.now();
+        LocalDateTime today = LocalDateTime.now();
         if (strategyDTO.getStartDate().isAfter(today)) {
             strategyDTO.setIsActive(false);
             // Si la fecha de inicio es posterior al día de hoy
@@ -83,7 +83,7 @@ public class CouponFacade {
             }
             if (strategyUpdates.containsKey("startDate")) {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                LocalDate startDate = LocalDate.parse((String) strategyUpdates.get("startDate"), formatter);
+                LocalDateTime startDate = LocalDateTime.parse((String) strategyUpdates.get("startDate"), formatter);
                 existingStrategy.setStartDate(startDate);
             }
         }
