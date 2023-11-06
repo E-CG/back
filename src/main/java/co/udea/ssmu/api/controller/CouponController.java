@@ -17,6 +17,7 @@ import co.udea.ssmu.api.utils.exception.DataDuplicatedException;
 import co.udea.ssmu.api.utils.exception.DataNotFoundException;
 
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/coupons")
 public class CouponController {
     @Autowired
