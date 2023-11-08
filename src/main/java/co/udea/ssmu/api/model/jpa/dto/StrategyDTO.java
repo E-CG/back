@@ -18,6 +18,12 @@ public class StrategyDTO{
     @NotEmpty(message = "Falta una descripción")
     private String description;
 
+    @Min(value = 1, message = "El porcentaje de descuento debe ser mayor que 0")
+    @Max(value = 100, message = "El porcentaje de descuento no puede ser mayor al 100%")
+    private int discountPercentage;
+    
+    private Boolean isActive;
+
     @NotNull(message = "Falta la fecha de inicio")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime startDate;
@@ -25,10 +31,6 @@ public class StrategyDTO{
     @NotNull(message = "Falta la fecha de finalización")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime endDate;
-
-    @Min(value = 1, message = "El porcentaje de descuento debe ser mayor que 0")
-    @Max(value = 100, message = "El porcentaje de descuento no puede ser mayor al 100%")
-    private int discountPercentage;
 
     @Min(value = 0, message = "El valor de descuento no puede ser negativo")
     @Max(value = 50000, message = "El valor de descuento no puede ser mayor a 50,000")
@@ -41,8 +43,6 @@ public class StrategyDTO{
     @Min(value = 5000, message = "El descuento máximo debe ser al menos 5000")
     @Max(value = 100000, message = "El descuento máximo no puede ser mayor a 100,000")
     private int maxDiscount;
-
-    private Boolean isActive;
 
     @NotEmpty(message = "Falta la ciudad")
     private String city;

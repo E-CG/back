@@ -40,7 +40,7 @@ public class Strategy implements Serializable {
     private LocalDateTime endDate;
 
     @Column(name = "valor_descuento", nullable = true, length = 5)
-    private int discountValue;
+    private Integer discountValue;
 
     @Column(name = "valor_minimo", nullable = true, length = 5)
     private int minValue;
