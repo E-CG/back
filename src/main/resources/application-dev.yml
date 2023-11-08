@@ -32,7 +32,7 @@ spring:
 ssmu-api:
   openapi:
     dev-url: http://localhost:8080/ssmu-api
-    prod-url: https://ssmu-api.com #https://codefact.udea.edu.co/
+    prod-url: https://ssmu-api.com
 
 logging:
   level:
