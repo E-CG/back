@@ -25,19 +25,16 @@ public class CouponController {
     @Operation(summary = "Permite crear un cupón")
     @PostMapping("/create")
     public ResponseEntity<StandardResponse<String>> createCoupon(@Valid @RequestBody CouponDTO couponDTO) {
+        CouponDTO newCoupon = couponFacade.createCoupon(couponDTO);
         try {
-            couponFacade.createCoupon(couponDTO);
-            return ResponseEntity.ok(new StandardResponse<>(
-                StandardResponse.StatusStandardResponse.OK,
-                messages.get("coupon.save.successful")));
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(new StandardResponse<>(
+                    StandardResponse.StatusStandardResponse.OK,
+                    messages.get("coupon.save.successful"),
+                    newCoupon.toString()));
         } catch (DataDuplicatedException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(new StandardResponse<>(
-                messages.get("coupon.save.duplicate.code"), 
-                StandardResponse.StatusStandardResponse.ERROR));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new StandardResponse<>(
-                messages.get("coupon.save.data.invalid"),
-                StandardResponse.StatusStandardResponse.ERROR));
+                    StandardResponse.StatusStandardResponse.ERROR,
+                    messages.get("coupon.save.duplicated")));
         }
     }
 
@@ -47,13 +44,13 @@ public class CouponController {
         try {
             List<CouponDTO> coupons = couponFacade.findAll();
             return ResponseEntity.ok(new StandardResponse<>(
-                StandardResponse.StatusStandardResponse.OK,
-                messages.get("coupon.get.successful"),
-                coupons));
+                    StandardResponse.StatusStandardResponse.OK,
+                    messages.get("coupon.get.successful"),
+                    coupons));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new StandardResponse<>(
-                StandardResponse.StatusStandardResponse.ERROR,
-                messages.get("coupon.get.error")));
+                    StandardResponse.StatusStandardResponse.ERROR,
+                    messages.get("coupon.get.error")));
         }
     }
 

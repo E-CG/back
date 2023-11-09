@@ -9,6 +9,7 @@ import lombok.*;
 
 @Getter
 @Setter
+@ToString
 public class StrategyDTO{
     private long idStrategy;
 
@@ -27,7 +28,7 @@ public class StrategyDTO{
     private LocalDateTime endDate;
 
     @Min(value = 1, message = "El porcentaje de descuento debe ser mayor que 0")
-    @Max(value = 100, message = "El porcentaje de descuento no puede ser mayor al 100%")
+    @Max(value = 100, message = "El porcentaje de descuento debe ser menor que 100%")
     private int discountPercentage;
 
     @Min(value = 0, message = "El valor de descuento no puede ser negativo")
