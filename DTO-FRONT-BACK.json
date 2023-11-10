@@ -1,0 +1,95 @@
+{
+  "cupones": {
+    "POST": {
+      "body": {
+        "name": "Nombre del cupón (50)",
+        "description": "Descripción del cupón",
+        "startDate": "Fecha de inicio del cupón (yyyy-MM-dd HH:mm:ss)",
+        "endDate": "Fecha de fin del cupón (yyyy-MM-dd HH:mm:ss)",
+        "discountPercentage": "Porcentaje de descuento del cupón (0-100) | 0",
+        "maxDiscount": "Descuento máximo del cupón (en pesos) (Solo para descuento por porcentaje) | 0",
+        "discountValue": "Valor de descuento del cupón (en pesos) | 0",
+        "minValue": "Valor mínimo de compra para aplicar el cupón (en pesos)",
+        "amount": "Cantidad de cupones disponibles",
+        "city": "Ciudad del cupón"
+      },
+      "servidor": {
+        "message": "Mensaje del resultado de la operación",
+        "error": "Error al crear el cupón"
+      },
+      "http": {
+        "ResponseCode": "Código de respuesta HTTP"
+      }
+    },
+    "GET:id": {
+      "url": {
+        "id": "ID del cupón"
+      },
+      "servidor": {
+        "id": "ID del cupón",
+        "name": "Nombre del cupón (50)",
+        "description": "Descripción del cupón",
+        "startDate": "Fecha de inicio del cupón (yyyy-MM-dd HH:mm:ss)",
+        "endDate": "Fecha de fin del cupón (yyyy-MM-dd HH:mm:ss)",
+        "discountPercentage": "Porcentaje de descuento del cupón (0-100) | 0",
+        "maxDiscount": "Descuento máximo del cupón (en pesos) (Solo para descuento por porcentaje) | 0",
+        "discountValue": "Valor de descuento del cupón (en pesos) | 0",
+        "minValue": "Valor mínimo de compra para aplicar el cupón (en pesos)",
+        "amount": "Cantidad de cupones disponibles",
+        "city": "Ciudad del cupón",
+        "amountAvailable": "Cantidad de cupones disponibles",
+        "status": "Estado del cupón (0: Inactivo | 1: Activo | 2: Caducado | 3: Usado)"
+      },
+      "http": {
+        "ResponseCode": "Código de respuesta HTTP"
+      }
+    },
+    "GET/all[limit=n, page=m]": "Obtine n cupones a partir del cupón (page - 1) * limit con la estructura del método GET:id"
+  },
+  "promociones": {
+    "POST": {
+      "body": {
+        "name": "Nombre de la promoción (50)",
+        "description": "Descripción de la promoción",
+        "startDate": "Fecha de inicio de la promoción (yyyy-MM-dd HH:mm:ss)",
+        "endDate": "Fecha de fin de la promoción (yyyy-MM-dd HH:mm:ss)",
+        "discountPercentage": "Porcentaje de descuento de la promoción (0-100) | 0",
+        "maxDiscount": "Descuento máximo de la promoción (en pesos) (Solo para descuento por porcentaje) | 0",
+        "discountValue": "Valor de descuento de la promoción (en pesos) | 0",
+        "minValue": "Valor mínimo de compra para aplicar la promoción (en pesos)",
+        "city": "Ciudad de la promoción",
+        "userType": "Tipo de usuario que puede usar la promoción (0: Frecuente | 1: Ocacional | 2: Normal | 3: Todos | 4: Nuevo ???)"
+      },
+      "servidor": {
+        "message": "Mensaje del resultado de la operación",
+        "error": "Error al crear la promoción"
+      },
+      "http": {
+        "ResponseCode": "Código de respuesta HTTP"
+      }
+    },
+    "GET:id": {
+      "url": {
+        "id": "ID de la promoción"
+      },
+      "servidor": {
+        "id": "ID de la promoción",
+        "name": "Nombre de la promoción (50)",
+        "description": "Descripción de la promoción",
+        "startDate": "Fecha de inicio de la promoción (yyyy-MM-dd HH:mm:ss)",
+        "endDate": "Fecha de fin de la promoción (yyyy-MM-dd HH:mm:ss)",
+        "discountPercentage": "Porcentaje de descuento de la promoción (0-100) | 0",
+        "maxDiscount": "Descuento máximo de la promoción (en pesos) (Solo para descuento por porcentaje) | 0",
+        "discountValue": "Valor de descuento de la promoción (en pesos) | 0",
+        "minValue": "Valor mínimo de compra para aplicar la promoción (en pesos)",
+        "city": "Ciudad de la promoción",
+        "status": "Estado de la promoción (0: Inactivo | 1: Activo | 2: Caducado | 3: Usado)",
+        "userType": "Tipo de usuario que puede usar la promoción (0: Preferencial | 1: Ocacional | 2: Normal | 3: Todos | Nuevo ??? - Familiar ???)"
+      },
+      "http": {
+        "ResponseCode": "Código de respuesta HTTP"
+      }
+    },
+    "GET/all[limit=n, page=m]": "Obtine n promociones a partir de la promoción (page - 1) * limit con la estructura del método GET:id"
+  }
+}
