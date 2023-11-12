@@ -3,6 +3,7 @@ package co.udea.ssmu.api.model.jpa.model;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,7 +17,7 @@ public class Strategy implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_estrategia", length = 3, nullable = false, unique = true, updatable = false)
-    private long idStrategy;
+    private Long idStrategy;
 
     @Column(name = "nombre", nullable = false, length = 50)
     private String name;
@@ -48,6 +49,10 @@ public class Strategy implements Serializable {
     @Column(name = "descuento_maximo", nullable = false, length = 5)
     private int maxDiscount;
 
+    @Column(name = "tipo_usuario", nullable = false, length = 20)
+    private String userType;
+
     @ManyToMany(mappedBy = "strategies")
     private List<User> users;
+
 }

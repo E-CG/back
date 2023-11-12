@@ -3,7 +3,9 @@ package co.udea.ssmu.api.model.jpa.dto;
 import java.time.LocalDateTime;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonFormat;
+
 import co.udea.ssmu.api.model.jpa.model.User;
+import co.udea.ssmu.api.utils.common.StrategyUserTypeEnum;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
@@ -14,7 +16,7 @@ import lombok.*;
 @Setter
 @ToString
 public class StrategyDTO{
-    private long idStrategy;
+    private Long idStrategy;
 
     @NotEmpty(message = "Falta el nombre de la estrategia")
     private String name;
@@ -30,21 +32,24 @@ public class StrategyDTO{
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime endDate;
 
-    @Min(value = 1, message = "El porcentaje de descuento debe ser mayor que 0")
-    @Max(value = 100, message = "El porcentaje de descuento debe ser menor que 100%")
+    @Min(value = 1)
+    @Max(value = 100)
     private int discountPercentage;
 
-    @Min(value = 0, message = "El valor de descuento no puede ser negativo")
-    @Max(value = 50000, message = "El valor de descuento no puede ser mayor a 50,000")
-    private Integer discountValue;
+    @Min(value = 0)
+    @Max(value = 50000)
+    private int discountValue;
 
-    @Min(value = 5000, message = "El valor mínimo debe ser al menos 5000")
-    @Max(value = 100000, message = "El valor mínimo no puede ser mayor a 100,000")
+    @Min(value = 5000)
+    @Max(value = 100000)
     private int minValue;
 
-    @Min(value = 5000, message = "El descuento máximo debe ser al menos 5000")
-    @Max(value = 100000, message = "El descuento máximo no puede ser mayor a 100,000")
+    @Min(value = 5000)
+    @Max(value = 100000)
     private int maxDiscount;
+
+    @NotNull(message = "Falta el tipo de usuario")
+    private StrategyUserTypeEnum userType;
 
     private Boolean isActive;
 
@@ -52,4 +57,5 @@ public class StrategyDTO{
     private String city;
 
     private List<User> users;
+
 }
