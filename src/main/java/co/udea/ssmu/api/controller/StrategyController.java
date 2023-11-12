@@ -1,6 +1,7 @@
 package co.udea.ssmu.api.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,6 +15,7 @@ import co.udea.ssmu.api.model.jpa.dto.StrategyDTO;
 import co.udea.ssmu.api.services.strategy.facade.StrategyFacade;
 import co.udea.ssmu.api.utils.common.*;
 import co.udea.ssmu.api.utils.exception.DataDuplicatedException;
+import co.udea.ssmu.api.utils.exception.DataNotFoundException;
 
 @RestController
 @CrossOrigin("*")
@@ -44,7 +46,7 @@ public class StrategyController {
         }
     }
 
-         @Operation(summary = "Permite obtener todas las estrategias")
+     @Operation(summary = "Permite obtener todas las estrategias")
     @GetMapping("/all")
     public ResponseEntity<StandardResponse<List<StrategyDTO>>> getAllStrategies() {
         try {
@@ -87,4 +89,31 @@ public class StrategyController {
                 strategyFacade.findWithFilter(pageable)));
     }
 
+    @Operation(summary = "Permite actualizar los datos de una estrategia")
+    @PatchMapping("/edit/{id}")
+     public ResponseEntity<StandardResponse<Long>> editStrategy(@PathVariable Long id,
+            @RequestBody Map<String, Object> updates) {        
+        StrategyDTO existingStrategy = strategyFacade.findById(id);
+        if (existingStrategy == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new StandardResponse<>(
+                    StandardResponse.StatusStandardResponse.ERROR,
+                    messages.get("strategy.not.found")));
+        }
+
+        try{
+            strategyFacade.updateStrategyFields(existingStrategy, updates);
+        }catch (DataNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new StandardResponse<>(
+                    StandardResponse.StatusStandardResponse.ERROR,
+                    messages.get("strategy.update.data.invalid")));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new StandardResponse<>(
+                    StandardResponse.StatusStandardResponse.ERROR,
+                    messages.get("strategy.update.error")));
+        }
+
+        return ResponseEntity.ok(new StandardResponse<>(
+                StandardResponse.StatusStandardResponse.OK,
+                messages.get("strategy.update.successful")));
+    }            
 }
