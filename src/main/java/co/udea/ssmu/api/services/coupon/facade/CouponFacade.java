@@ -15,6 +15,7 @@ import co.udea.ssmu.api.model.jpa.model.Coupon;
 import co.udea.ssmu.api.services.coupon.service.CouponService;
 import co.udea.ssmu.api.utils.common.CouponCodeBuilder;
 import co.udea.ssmu.api.utils.common.CouponStatusEnum;
+import co.udea.ssmu.api.utils.common.StrategyUserTypeEnum;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -46,6 +47,14 @@ public class CouponFacade {
             // Si la fecha de inicio es hoy o anterior, establecer el estado como Activo
             couponDTO.setStatus(CouponStatusEnum.ACTIVO);
         }
+
+        int userTypeEnum = strategyDTO.getUserType().getCode();
+        if(userTypeEnum == 0){
+            strategyDTO.setUserType(StrategyUserTypeEnum.FRECUENTE);
+        }else if(userTypeEnum == 1){
+            strategyDTO.setUserType(StrategyUserTypeEnum.OCACIONAL);
+        }
+
         Coupon coupon = couponMapper.toEntity(couponDTO);
         return couponMapper.toDto(couponService.saveCoupon(coupon));
     }
