@@ -2,7 +2,11 @@ package co.udea.ssmu.api.services.strategy.facade;
 
 import java.time.LocalDateTime;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import co.udea.ssmu.api.model.jpa.dto.StrategyDTO;
@@ -41,4 +45,19 @@ public class StrategyFacade {
         Strategy strategy = strategyMapper.toEntity(strategyDTO);
         return strategyMapper.toDto(strategyService.saveStrategy(strategy));
     }
+
+    public StrategyDTO findById(Long id){
+        StrategyDTO strategyDTO = strategyMapper.toDto(strategyService.findById(id));
+        return strategyDTO;
+    }
+
+    public List<StrategyDTO> findAll(){
+        return strategyMapper.toDto(strategyService.findAll());
+    }
+
+
+    public Page<StrategyDTO> findWithFilter(Pageable pageable) {
+        return strategyService.findWithFilter(pageable).map(strategyMapper::toDto);
+    }
+
 }

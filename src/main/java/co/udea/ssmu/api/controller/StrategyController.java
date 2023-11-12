@@ -1,6 +1,11 @@
 package co.udea.ssmu.api.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
@@ -38,4 +43,48 @@ public class StrategyController {
                 StandardResponse.StatusStandardResponse.ERROR));
         }
     }
+
+         @Operation(summary = "Permite obtener todas las estrategias")
+    @GetMapping("/all")
+    public ResponseEntity<StandardResponse<List<StrategyDTO>>> getAllStrategies() {
+        try {
+            List<StrategyDTO> strategies = strategyFacade.findAll();
+            return ResponseEntity.ok(new StandardResponse<>(
+                StandardResponse.StatusStandardResponse.OK,
+                messages.get("strategy.get.successful"),
+                strategies));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new StandardResponse<>(
+                StandardResponse.StatusStandardResponse.ERROR,
+                messages.get("strategy.get.error")));
+        }
+    }
+
+    @Operation(summary = "Permite obtener una estrategia por su id")
+    @GetMapping("/{id}")
+    public ResponseEntity<StandardResponse<StrategyDTO>> getStrategyById(@PathVariable Long id) {
+        StrategyDTO strategyDTO = strategyFacade.findById(id);
+        if (strategyDTO == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new StandardResponse<>(
+                    StandardResponse.StatusStandardResponse.ERROR,
+                    messages.get("strategy.not.found")));
+        }
+
+        return ResponseEntity.ok(new StandardResponse<>(
+                StandardResponse.StatusStandardResponse.OK,
+                messages.get("strategy.get.successful"),
+                strategyDTO));
+    }
+
+    @Operation(summary = "Permite obtener todas las estrategias")
+    @GetMapping("/all-filter")
+    public ResponseEntity<StandardResponse<Page<StrategyDTO>>> getStrategiesFiltered(
+            @RequestParam(required = false) Integer limit) {
+        Pageable pageable = PageRequest.ofSize(limit);
+        return ResponseEntity.ok(new StandardResponse<>(
+                StandardResponse.StatusStandardResponse.OK,
+                messages.get("strategy.get.successful"),
+                strategyFacade.findWithFilter(pageable)));
+    }
+
 }
