@@ -1,7 +1,7 @@
 package co.udea.ssmu.api.model.jpa.dto;
 
 import java.util.List;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -1,8 +1,8 @@
 package co.udea.ssmu.api.model.jpa.model;
 
 import java.io.Serializable;
-import javax.validation.constraints.NotNull;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 @Data
