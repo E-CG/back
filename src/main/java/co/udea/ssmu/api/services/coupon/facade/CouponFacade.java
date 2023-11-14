@@ -36,7 +36,7 @@ public class CouponFacade {
 
         // Estableciendo cantidad creada de cupones
         couponDTO.setAmountAvalaible(couponDTO.getAmountCreated());
-        if (couponDTO.getAmountCreated() < 1 && couponDTO.getAmountCreated() > 100) {
+        if (couponDTO.getAmountCreated() < 1 || couponDTO.getAmountCreated() > 100) {
             throw new InvalidCouponAmount("La cantidad de cupones debe estar entre 1 y 100");
         }
 

@@ -57,5 +57,4 @@ public class StrategyDTO{
     private String city;
 
     private List<User> users;
-
 }

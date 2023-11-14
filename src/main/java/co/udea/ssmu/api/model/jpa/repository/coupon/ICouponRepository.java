@@ -17,6 +17,6 @@ public interface ICouponRepository extends JpaRepository<Coupon, String> {
      */
 
     // Obtiene los cupones con los parametros limit y offset, ordenados por cantidad disponible
-    @Query(value = "SELECT c FROM Coupon c ORDER BY c.amount DESC")
+    @Query(value = "SELECT c FROM Coupon c ORDER BY c.amountAvalaible DESC")
     List<Coupon> findAllWithQueryParam(@Param("limit") int limit, @Param("offset") int offset);
 }
