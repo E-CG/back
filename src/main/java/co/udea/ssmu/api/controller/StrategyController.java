@@ -30,35 +30,35 @@ public class StrategyController {
     @Operation(summary = "Permite crear una estrategia")
     @PostMapping("/create")
     public ResponseEntity<StandardResponse<String>> createStrategy(@Valid @RequestBody StrategyDTO strategyDTO) {
-             StrategyDTO newStrategy = strategyFacade.createStrategy(strategyDTO);
+        StrategyDTO newStrategy = strategyFacade.createStrategy(strategyDTO);
         try {
             return ResponseEntity.ok(new StandardResponse<>(
-                StandardResponse.StatusStandardResponse.OK,
-                messages.get("strategy.save.successful"), newStrategy.toString()));
+                    StandardResponse.StatusStandardResponse.OK,
+                    messages.get("strategy.save.successful"), newStrategy.toString()));
         } catch (DataDuplicatedException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(new StandardResponse<>(
-                messages.get("strategy.save.duplicate.code"), 
-                StandardResponse.StatusStandardResponse.ERROR));
+                    messages.get("strategy.save.duplicate.code"),
+                    StandardResponse.StatusStandardResponse.ERROR));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new StandardResponse<>(
-                messages.get("strategy.save.data.invalid"),
-                StandardResponse.StatusStandardResponse.ERROR));
+                    messages.get("strategy.save.data.invalid"),
+                    StandardResponse.StatusStandardResponse.ERROR));
         }
     }
 
-     @Operation(summary = "Permite obtener todas las estrategias")
+    @Operation(summary = "Permite obtener todas las estrategias")
     @GetMapping("/all")
     public ResponseEntity<StandardResponse<List<StrategyDTO>>> getAllStrategies() {
         try {
             List<StrategyDTO> strategies = strategyFacade.findAll();
             return ResponseEntity.ok(new StandardResponse<>(
-                StandardResponse.StatusStandardResponse.OK,
-                messages.get("strategy.get.successful"),
-                strategies));
+                    StandardResponse.StatusStandardResponse.OK,
+                    messages.get("strategy.get.successful"),
+                    strategies));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new StandardResponse<>(
-                StandardResponse.StatusStandardResponse.ERROR,
-                messages.get("strategy.get.error")));
+                    StandardResponse.StatusStandardResponse.ERROR,
+                    messages.get("strategy.get.error")));
         }
     }
 
@@ -91,8 +91,8 @@ public class StrategyController {
 
     @Operation(summary = "Permite actualizar los datos de una estrategia")
     @PatchMapping("/edit/{id}")
-     public ResponseEntity<StandardResponse<Long>> editStrategy(@PathVariable Long id,
-            @RequestBody Map<String, Object> updates) {        
+    public ResponseEntity<StandardResponse<Long>> editStrategy(@PathVariable Long id,
+            @RequestBody Map<String, Object> updates) {
         StrategyDTO existingStrategy = strategyFacade.findById(id);
         if (existingStrategy == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new StandardResponse<>(
@@ -100,9 +100,9 @@ public class StrategyController {
                     messages.get("strategy.not.found")));
         }
 
-        try{
+        try {
             strategyFacade.updateStrategyFields(existingStrategy, updates);
-        }catch (DataNotFoundException e) {
+        } catch (DataNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new StandardResponse<>(
                     StandardResponse.StatusStandardResponse.ERROR,
                     messages.get("strategy.update.data.invalid")));
@@ -115,5 +115,5 @@ public class StrategyController {
         return ResponseEntity.ok(new StandardResponse<>(
                 StandardResponse.StatusStandardResponse.OK,
                 messages.get("strategy.update.successful")));
-    }            
+    }
 }
