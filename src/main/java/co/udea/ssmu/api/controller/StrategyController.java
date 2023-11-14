@@ -28,12 +28,12 @@ public class StrategyController {
 
     @Operation(summary = "Permite crear una estrategia")
     @PostMapping("/create")
-    public ResponseEntity<StandardResponse<String>> createStrategy(@Valid @RequestBody StrategyDTO strategyDTO) {
+    public ResponseEntity<StandardResponse<StrategyDTO>> createStrategy(@Valid @RequestBody StrategyDTO strategyDTO) {
         StrategyDTO newStrategy = strategyFacade.createStrategy(strategyDTO);
         try {
             return ResponseEntity.ok(new StandardResponse<>(
                     StandardResponse.StatusStandardResponse.OK,
-                    messages.get("strategy.save.successful"), newStrategy.toString()));
+                    messages.get("strategy.save.successful"), newStrategy));
         } catch (DataDuplicatedException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(new StandardResponse<>(
                     messages.get("strategy.save.duplicate.code"),

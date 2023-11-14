@@ -2,10 +2,7 @@ package co.udea.ssmu.api.services.coupon.facade;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
+import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +15,7 @@ import co.udea.ssmu.api.services.coupon.service.CouponService;
 import co.udea.ssmu.api.utils.common.CouponCodeBuilder;
 import co.udea.ssmu.api.utils.common.CouponStatusEnum;
 import co.udea.ssmu.api.utils.common.StrategyUserTypeEnum;
+import co.udea.ssmu.api.utils.exception.InconsistentDiscountException;
 import co.udea.ssmu.api.utils.exception.InvalidCouponAmount;
 import co.udea.ssmu.api.utils.exception.InvalidDiscountPercentage;
 import jakarta.transaction.Transactional;
@@ -44,8 +42,23 @@ public class CouponFacade {
         }
 
         // Validando porcentaje de descuento
-        if (strategyDTO.getDiscountPercentage() < 1 || strategyDTO.getDiscountPercentage() > 50) {
+        if (strategyDTO.getDiscountPercentage() < 1 || strategyDTO.getDiscountPercentage() > 100) {
             throw new InvalidDiscountPercentage("El porcentaje de descuento debe estar entre 0 y 100");
+        }
+
+        // Verificando que al menos un tipo de descuento esté presente
+        if (strategyDTO.getDiscountPercentage() == 0
+                && (strategyDTO.getDiscountValue() == null || strategyDTO.getDiscountValue() == 0)) {
+            throw new InconsistentDiscountException("Debe especificar al menos un tipo de descuento");
+        }
+
+        // Verificando consistencia entre descuento porcentual y valor de descuento
+        if ((strategyDTO.getDiscountPercentage() > 0 && strategyDTO.getDiscountValue() != null
+                && strategyDTO.getDiscountValue() != 0)
+                || (strategyDTO.getDiscountPercentage() == 0 && strategyDTO.getDiscountValue() != null
+                        && strategyDTO.getDiscountValue() < 0)) {
+            throw new InconsistentDiscountException(
+                    "No se puede tener un porcentaje de descuento y un valor de descuento al mismo tiempo");
         }
 
         LocalDateTime today = LocalDateTime.now();

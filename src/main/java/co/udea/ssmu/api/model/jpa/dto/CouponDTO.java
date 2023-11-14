@@ -1,6 +1,7 @@
 package co.udea.ssmu.api.model.jpa.dto;
 
 import co.udea.ssmu.api.utils.common.CouponStatusEnum;
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
@@ -10,6 +11,7 @@ import lombok.*;
 public class CouponDTO{
     private String code;
 
+    @Nullable
     @Min(1)
     @Max(100)
     private Integer amountAvalaible;
@@ -19,7 +21,6 @@ public class CouponDTO{
     @Max(100)
     private Integer amountCreated;
 
-    @NotNull(message = "Falta el estado del cupón")
     private CouponStatusEnum status;
     
     private StrategyDTO strategy;
