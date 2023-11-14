@@ -2,7 +2,7 @@ package co.udea.ssmu.api.controller;
 
 import java.util.List;
 import java.util.Map;
-
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -10,7 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
-import jakarta.validation.Valid;
 import co.udea.ssmu.api.model.jpa.dto.StrategyDTO;
 import co.udea.ssmu.api.services.strategy.facade.StrategyFacade;
 import co.udea.ssmu.api.utils.common.*;

@@ -1,7 +1,10 @@
 package co.udea.ssmu.api.model.jpa.dto;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
 import co.udea.ssmu.api.utils.common.CouponStatusEnum;
-import jakarta.validation.constraints.*;
 import lombok.*;
 
 @Getter

@@ -2,14 +2,10 @@ package co.udea.ssmu.api.model.jpa.dto;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import javax.validation.constraints.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
-
 import co.udea.ssmu.api.model.jpa.model.User;
 import co.udea.ssmu.api.utils.common.StrategyUserTypeEnum;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Getter
@@ -32,7 +28,7 @@ public class StrategyDTO{
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime endDate;
 
-    @Min(value = 1)
+    @Min(value = 0)
     @Max(value = 100)
     private Integer discountPercentage;
 
