@@ -34,19 +34,19 @@ public class StrategyDTO{
 
     @Min(value = 1)
     @Max(value = 100)
-    private int discountPercentage;
+    private Integer discountPercentage;
 
     @Min(value = 0)
     @Max(value = 50000)
-    private int discountValue;
+    private Integer discountValue;
 
     @Min(value = 5000)
     @Max(value = 100000)
-    private int minValue;
+    private Integer minValue;
 
     @Min(value = 5000)
     @Max(value = 100000)
-    private int maxDiscount;
+    private Integer maxDiscount;
 
     @NotNull(message = "Falta el tipo de usuario")
     private StrategyUserTypeEnum userType;

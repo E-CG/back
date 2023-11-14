@@ -26,7 +26,7 @@ public class Strategy implements Serializable {
     private String description;
 
     @Column(name = "porcentaje_descuento", nullable = false, length = 3)
-    private int discountPercentage;
+    private Integer discountPercentage;
 
     @Column(name = "estado", nullable = false, length = 1)
     private Boolean isActive;
@@ -41,13 +41,13 @@ public class Strategy implements Serializable {
     private LocalDateTime endDate;
 
     @Column(name = "valor_descuento", nullable = true, length = 5)
-    private int discountValue;
+    private Integer discountValue;
 
     @Column(name = "valor_minimo", nullable = true, length = 5)
-    private int minValue;
+    private Integer minValue;
 
     @Column(name = "descuento_maximo", nullable = false, length = 5)
-    private int maxDiscount;
+    private Integer maxDiscount;
 
     @Column(name = "tipo_usuario", nullable = false, length = 20)
     private String userType;
