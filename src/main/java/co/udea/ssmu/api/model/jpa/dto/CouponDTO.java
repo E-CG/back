@@ -11,9 +11,13 @@ public class CouponDTO{
     private String code;
 
     @NotNull(message = "Falta la cantidad de cupones")
-    @Min(value = 1)
-    @Max(value = 100)
-    private Integer amount;
+    @Min(1)
+    @Max(100)
+    private Integer amountAvalaible;
+
+    @Min(1)
+    @Max(100)
+    private Integer amountCreated;
 
     @NotNull(message = "Falta el estado del cupón")
     private CouponStatusEnum status;

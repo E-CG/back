@@ -16,6 +16,7 @@ import co.udea.ssmu.api.services.coupon.service.CouponService;
 import co.udea.ssmu.api.utils.common.CouponCodeBuilder;
 import co.udea.ssmu.api.utils.common.CouponStatusEnum;
 import co.udea.ssmu.api.utils.common.StrategyUserTypeEnum;
+import co.udea.ssmu.api.utils.exception.InvalidCouponAmount;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -32,6 +33,12 @@ public class CouponFacade {
         // Creando el codigo del cupón
         StrategyDTO strategyDTO = couponDTO.getStrategy();
         couponDTO.setCode(couponBuilder.buildCodeCoupon(strategyDTO.getName()));
+
+        // Estableciendo cantidad creada de cupones
+        couponDTO.setAmountAvalaible(couponDTO.getAmountCreated());
+        if (couponDTO.getAmountCreated() < 1 && couponDTO.getAmountCreated() > 100) {
+            throw new InvalidCouponAmount("La cantidad de cupones debe estar entre 1 y 100");
+        }
 
         LocalDateTime today = LocalDateTime.now();
         if (strategyDTO.getStartDate().isAfter(today)) {
@@ -79,7 +86,7 @@ public class CouponFacade {
 
     public void updateCouponFields(CouponDTO existingCoupon, Map<String, Object> updates) {
         if (updates.containsKey("amount")) {
-            existingCoupon.setAmount((Integer) updates.get("amount"));
+            existingCoupon.setAmountAvalaible((Integer) updates.get("amount"));
         }if (updates.containsKey("code")) {
             existingCoupon.setCode((String) updates.get("code"));
         }

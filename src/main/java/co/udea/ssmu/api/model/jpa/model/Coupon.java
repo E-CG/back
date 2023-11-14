@@ -21,8 +21,12 @@ public class Coupon implements Serializable {
     private String status;
 
     @NotNull
-    @Column(name = "cantidad_disponible", nullable = false, length = 3, updatable = true)
-    private Integer amount;
+    @Column(name = "cantidad_disponible", nullable = false, length = 3, updatable = false)
+    private Integer amountAvalaible;
+
+    @NotNull
+    @Column(name = "cantidad_creada", nullable = false, updatable = false)
+    private Integer amountCreated;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_estrategia")
