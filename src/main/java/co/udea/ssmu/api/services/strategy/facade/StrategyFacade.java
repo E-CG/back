@@ -2,7 +2,6 @@ package co.udea.ssmu.api.services.strategy.facade;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
 import java.util.List;
 import java.util.Map;
 
@@ -26,46 +25,48 @@ public class StrategyFacade {
 
     @Autowired
     private StrategyService strategyService;
+
     @Autowired
     private IStrategyMapper strategyMapper;
 
     public StrategyDTO createStrategy(StrategyDTO strategyDTO) {
-        // Validando porcentaje de descuento
-        if (strategyDTO.getDiscountPercentage() < 1 || strategyDTO.getDiscountPercentage() > 100) {
+        validateStrategy(strategyDTO);
+        return strategyMapper.toDto(strategyService.saveStrategy(strategyMapper.toEntity(strategyDTO)));
+    }
+
+    private void validateStrategy(StrategyDTO strategyDTO) {
+        validateDiscount(strategyDTO.getDiscountPercentage(), strategyDTO.getDiscountValue());
+        validateDateRange(strategyDTO.getStartDate(), strategyDTO.getEndDate());
+        validateUserType(strategyDTO.getUserType());
+    }
+
+    private void validateDiscount(int discountPercentage, Integer discountValue) {
+        if (discountPercentage < 1 || discountPercentage > 100) {
             throw new InvalidDiscountPercentage("El porcentaje de descuento debe estar entre 0 y 100");
         }
 
-        // Verificando consistencia entre descuento porcentual y valor de descuento
-        if ((strategyDTO.getDiscountPercentage() > 0 && strategyDTO.getDiscountValue() != null
-                && strategyDTO.getDiscountValue() != 0)
-                || (strategyDTO.getDiscountPercentage() == 0 && strategyDTO.getDiscountValue() != null
-                        && strategyDTO.getDiscountValue() < 0)) {
+        if ((discountPercentage > 0 && discountValue != null && discountValue != 0)
+                || (discountPercentage == 0 && discountValue != null && discountValue < 0)) {
             throw new InconsistentDiscountException(
                     "No se puede tener un porcentaje de descuento y un valor de descuento al mismo tiempo");
         }
+    }
 
+    private void validateDateRange(LocalDateTime startDate, LocalDateTime endDate) {
         LocalDateTime today = LocalDateTime.now();
-        // Verificar y establecer isActive
-        if (strategyDTO.getStartDate().isAfter(today) || strategyDTO.getEndDate().isBefore(today)) {
-            strategyDTO.setIsActive(false);
-        } else {
-            strategyDTO.setIsActive(true);
+        if (startDate.isAfter(today) || endDate.isBefore(today)) {
+            throw new IllegalArgumentException("Las fechas de inicio y fin no son válidas");
         }
+    }
 
-        int userTypeEnum = strategyDTO.getUserType().getCode();
-        if (userTypeEnum == 0) {
-            strategyDTO.setUserType(StrategyUserTypeEnum.FRECUENTE);
-        } else if (userTypeEnum == 1) {
-            strategyDTO.setUserType(StrategyUserTypeEnum.OCACIONAL);
+    private void validateUserType(StrategyUserTypeEnum userType) {
+        if (userType == null) {
+            throw new IllegalArgumentException("El tipo de usuario no puede ser nulo");
         }
-
-        Strategy strategy = strategyMapper.toEntity(strategyDTO);
-        return strategyMapper.toDto(strategyService.saveStrategy(strategy));
     }
 
     public StrategyDTO findById(Long id) {
-        StrategyDTO strategyDTO = strategyMapper.toDto(strategyService.findById(id));
-        return strategyDTO;
+        return strategyMapper.toDto(strategyService.findById(id));
     }
 
     public List<StrategyDTO> findAll() {
@@ -82,44 +83,46 @@ public class StrategyFacade {
     }
 
     public void updateStrategyFields(StrategyDTO existingStrategy, Map<String, Object> updates) {
-        if (updates.containsKey("description")) {
-            existingStrategy.setDescription((String) updates.get("description"));
-        }
-        if (updates.containsKey("startDate")) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            LocalDateTime startDate = LocalDateTime.parse((String) updates.get("startDate"), formatter);
-            existingStrategy.setStartDate(startDate);
-        }
-        if (updates.containsKey("endDate")) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            LocalDateTime endDate = LocalDateTime.parse((String) updates.get("endDate"), formatter);
-            existingStrategy.setEndDate(endDate);
-        }
-        if (updates.containsKey("name")) {
-            existingStrategy.setName((String) updates.get("name"));
-        }
-        if (updates.containsKey("city")) {
-            existingStrategy.setCity((String) updates.get("city"));
-        }
-        if (updates.containsKey("discountValue")) {
-            existingStrategy.setDiscountValue((int) updates.get("discountValue"));
-        }
-        if (updates.containsKey("minValue")) {
-            existingStrategy.setMinValue((int) updates.get("minValue"));
-        }
-        if (updates.containsKey("maxDiscount")) {
-            existingStrategy.setMaxDiscount((int) updates.get("maxDiscount"));
-        }
-        if (updates.containsKey("userType")) {
-
-            int userType = (int) updates.get("userType");
-            if (userType == 0) {
-                existingStrategy.setUserType(StrategyUserTypeEnum.FRECUENTE);
-            } else if (userType == 1) {
-                existingStrategy.setUserType(StrategyUserTypeEnum.OCACIONAL);
+        updates.forEach((key, value) -> {
+            switch (key) {
+                case "description":
+                    existingStrategy.setDescription((String) value);
+                    break;
+                case "startDate":
+                    existingStrategy.setStartDate(parseDateTime((String) value));
+                    break;
+                case "endDate":
+                    existingStrategy.setEndDate(parseDateTime((String) value));
+                    break;
+                case "name":
+                    existingStrategy.setName((String) value);
+                    break;
+                case "city":
+                    existingStrategy.setCity((String) value);
+                    break;
+                case "discountValue":
+                    existingStrategy.setDiscountValue((int) value);
+                    break;
+                case "minValue":
+                    existingStrategy.setMinValue((int) value);
+                    break;
+                case "maxDiscount":
+                    existingStrategy.setMaxDiscount((int) value);
+                    break;
+                case "userType":
+                    existingStrategy.setUserType(mapToUserType((int) value));
+                    break;
             }
-        }
+        });
         editStrategy(existingStrategy);
     }
 
+    private LocalDateTime parseDateTime(String dateTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return LocalDateTime.parse(dateTime, formatter);
+    }
+
+    private StrategyUserTypeEnum mapToUserType(int userType) {
+        return userType == 0 ? StrategyUserTypeEnum.FRECUENTE : StrategyUserTypeEnum.OCACIONAL;
+    }
 }
