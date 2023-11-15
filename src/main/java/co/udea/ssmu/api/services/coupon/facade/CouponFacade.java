@@ -2,7 +2,9 @@ package co.udea.ssmu.api.services.coupon.facade;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,36 +25,40 @@ import jakarta.transaction.Transactional;
 @Service
 @Transactional
 public class CouponFacade {
+
     @Autowired
     private CouponService couponService;
+
     @Autowired
     private CouponCodeBuilder couponBuilder;
+
     @Autowired
     private ICouponMapper couponMapper;
 
     public CouponDTO createCoupon(CouponDTO couponDTO) {
-        // Creando el codigo del cupón
+        validateCouponCreation(couponDTO);
+        updateCouponStatus(couponDTO);
+        return couponMapper.toDto(couponService.saveCoupon(couponMapper.toEntity(couponDTO)));
+    }
+
+    private void validateCouponCreation(CouponDTO couponDTO) {
         StrategyDTO strategyDTO = couponDTO.getStrategy();
+
         couponDTO.setCode(couponBuilder.buildCodeCoupon(strategyDTO.getName()));
 
-        // Estableciendo cantidad creada de cupones
-        couponDTO.setAmountAvalaible(couponDTO.getAmountCreated());
         if (couponDTO.getAmountCreated() < 1 || couponDTO.getAmountCreated() > 100) {
             throw new InvalidCouponAmount("La cantidad de cupones debe estar entre 1 y 100");
         }
 
-        // Validando porcentaje de descuento
         if (strategyDTO.getDiscountPercentage() < 1 || strategyDTO.getDiscountPercentage() > 100) {
             throw new InvalidDiscountPercentage("El porcentaje de descuento debe estar entre 0 y 100");
         }
 
-        // Verificando que al menos un tipo de descuento esté presente
         if (strategyDTO.getDiscountPercentage() == 0
                 && (strategyDTO.getDiscountValue() == null || strategyDTO.getDiscountValue() == 0)) {
             throw new InconsistentDiscountException("Debe especificar al menos un tipo de descuento");
         }
 
-        // Verificando consistencia entre descuento porcentual y valor de descuento
         if ((strategyDTO.getDiscountPercentage() > 0 && strategyDTO.getDiscountValue() != null
                 && strategyDTO.getDiscountValue() != 0)
                 || (strategyDTO.getDiscountPercentage() == 0 && strategyDTO.getDiscountValue() != null
@@ -60,32 +66,22 @@ public class CouponFacade {
             throw new InconsistentDiscountException(
                     "No se puede tener un porcentaje de descuento y un valor de descuento al mismo tiempo");
         }
+    }
 
+    private void updateCouponStatus(CouponDTO couponDTO) {
+        StrategyDTO strategyDTO = couponDTO.getStrategy();
         LocalDateTime today = LocalDateTime.now();
+
         if (strategyDTO.getStartDate().isAfter(today)) {
             strategyDTO.setIsActive(false);
-            // Si la fecha de inicio es posterior al día de hoy
             couponDTO.setStatus(CouponStatusEnum.INACTIVO);
         } else if (strategyDTO.getEndDate().isBefore(today)) {
             strategyDTO.setIsActive(false);
-            // Si la fecha de fin es anterior al día de hoy, establecer el estado como
-            // Caducado
             couponDTO.setStatus(CouponStatusEnum.CADUCADO);
         } else {
             strategyDTO.setIsActive(true);
-            // Si la fecha de inicio es hoy o anterior, establecer el estado como Activo
             couponDTO.setStatus(CouponStatusEnum.ACTIVO);
         }
-
-        int userTypeEnum = strategyDTO.getUserType().getCode();
-        if (userTypeEnum == 0) {
-            strategyDTO.setUserType(StrategyUserTypeEnum.FRECUENTE);
-        } else if (userTypeEnum == 1) {
-            strategyDTO.setUserType(StrategyUserTypeEnum.OCACIONAL);
-        }
-
-        Coupon coupon = couponMapper.toEntity(couponDTO);
-        return couponMapper.toDto(couponService.saveCoupon(coupon));
     }
 
     public Page<CouponDTO> findWithFilter(Pageable pageable) {

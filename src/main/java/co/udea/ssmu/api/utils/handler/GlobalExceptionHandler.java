@@ -1,9 +1,7 @@
 package co.udea.ssmu.api.utils.handler;
 
 import co.udea.ssmu.api.utils.common.StandardResponse;
-import co.udea.ssmu.api.utils.exception.BusinessException;
-import co.udea.ssmu.api.utils.exception.DataDuplicatedException;
-import co.udea.ssmu.api.utils.exception.DataNotFoundException;
+import co.udea.ssmu.api.utils.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -13,13 +11,31 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(BusinessException.class)
-    protected ResponseEntity<?> handleBusinessException(BusinessException ex) {
+    @ExceptionHandler(InvalidDiscountPercentage.class)
+    protected ResponseEntity<?> handleInvalidDiscountPercentage(InvalidDiscountPercentage ex) {
         return new ResponseEntity<>(
                 new StandardResponse<>(
                         StandardResponse.StatusStandardResponse.ERROR,
                         ex.getMessage()),
-                HttpStatus.CONFLICT);
+                HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(InvalidCouponAmount.class)
+    protected ResponseEntity<?> handleInvalidCouponAmount(InvalidCouponAmount ex) {
+        return new ResponseEntity<>(
+                new StandardResponse<>(
+                        StandardResponse.StatusStandardResponse.ERROR,
+                        ex.getMessage()),
+                HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(InconsistentDiscountException.class)
+    protected ResponseEntity<?> handleInconsistentDiscountException(InconsistentDiscountException ex) {
+        return new ResponseEntity<>(
+                new StandardResponse<>(
+                        StandardResponse.StatusStandardResponse.ERROR,
+                        ex.getMessage()),
+                HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(DataNotFoundException.class)
@@ -33,15 +49,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(DataDuplicatedException.class)
     protected ResponseEntity<?> handleDataDuplicatedException(DataDuplicatedException ex) {
-        return new ResponseEntity<>(
-                new StandardResponse<>(
-                        StandardResponse.StatusStandardResponse.ERROR,
-                        ex.getMessage()),
-                HttpStatus.CONFLICT);
-    }
-
-    @ExceptionHandler(IllegalArgumentException.class)
-    protected ResponseEntity<?> handleIllegalArgumentException(IllegalArgumentException ex) {
         return new ResponseEntity<>(
                 new StandardResponse<>(
                         StandardResponse.StatusStandardResponse.ERROR,
