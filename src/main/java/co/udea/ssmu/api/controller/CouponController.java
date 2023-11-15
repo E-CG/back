@@ -84,14 +84,14 @@ public class CouponController {
 
   @Operation(summary = "Permite actualizar los datos de un cupón")
   @PatchMapping("/edit/{code}")
-  public ResponseEntity<StandardResponse<String>> editCoupon(@PathVariable String code,
+  public ResponseEntity<StandardResponse<CouponDTO>> editCoupon(@PathVariable String code,
       @RequestBody Map<String, Object> updates) {
     CouponDTO existingCoupon = couponFacade.findByCode(code);
     if (existingCoupon == null) {
       String errorMessage = "No se encontró el cupón con el código: " + code;
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new StandardResponse<>(
           StandardResponse.StatusStandardResponse.ERROR,
-          errorMessage));
+          errorMessage, null));
     }
 
     try {
@@ -110,6 +110,7 @@ public class CouponController {
 
     return ResponseEntity.ok(new StandardResponse<>(
         StandardResponse.StatusStandardResponse.OK,
-        messages.get("coupon.update.successful")));
+        messages.get("coupon.update.successful"), 
+        existingCoupon));
   }
 }
