@@ -62,7 +62,7 @@ public class CouponFacade {
 	}
 
 	private void validateDiscount(int discountPercentage, Integer discountValue) {
-		if (discountPercentage < 1 || discountPercentage > 100) {
+		if (discountPercentage < 0 || discountPercentage > 100) {
 			throw new InvalidDiscountPercentage("El porcentaje de descuento debe estar entre 0 y 100");
 		}
 	}
@@ -81,6 +81,7 @@ public class CouponFacade {
 
 	private void updateCouponStatus(CouponDTO couponDTO) {
 		StrategyDTO strategyDTO = couponDTO.getStrategy();
+		couponDTO.setAmountAvalaible(couponDTO.getAmountCreated());
 		LocalDateTime today = LocalDateTime.now();
 
 		if (strategyDTO.getStartDate().isAfter(today)) {

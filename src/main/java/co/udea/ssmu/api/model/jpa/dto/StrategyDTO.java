@@ -36,11 +36,11 @@ public class StrategyDTO{
     @Max(value = 50000)
     private Integer discountValue;
 
-    @Min(value = 5000)
+    @Min(value = 0)
     @Max(value = 100000)
     private Integer minValue;
 
-    @Min(value = 5000)
+    @Min(value = 0)
     @Max(value = 100000)
     private Integer maxDiscount;
 
