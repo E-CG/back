@@ -52,8 +52,8 @@ public class CouponFacade {
 
 		validateCouponAmount(couponDTO.getAmountCreated());
 		validateDiscount(strategyDTO.getDiscountPercentage(), strategyDTO.getDiscountValue());
-		validateDiscountConsistency(strategyDTO.getDiscountPercentage(), 
-		strategyDTO.getDiscountValue(), strategyDTO.getMaxDiscount(), strategyDTO.getMinValue());
+		validateDiscountConsistency(strategyDTO.getDiscountPercentage(),
+				strategyDTO.getDiscountValue(), strategyDTO.getMaxDiscount(), strategyDTO.getMinValue());
 	}
 
 	private void validateCouponAmount(int amountCreated) {
@@ -98,7 +98,7 @@ public class CouponFacade {
 		if (minValue > 0 && (discountValue == null || discountValue == 0)) {
 			throw new InconsistentDiscountException(
 					"Si el valor mínimo es mayor que 0, el valor de descuento debe ser mayor que 0");
-	}
+		}
 
 		if (minValue > 0 && discountPercentage > 0) {
 			throw new InconsistentDiscountException(
@@ -109,12 +109,11 @@ public class CouponFacade {
 	private void updateCouponStatus(CouponDTO couponDTO) {
 		StrategyDTO strategyDTO = couponDTO.getStrategy();
 		couponDTO.setAmountAvalaible(couponDTO.getAmountCreated());
-		LocalDateTime today = LocalDateTime.now();
 
-		if (strategyDTO.getStartDate().isAfter(today)) {
+		if (strategyDTO.getStartDate().isAfter(LocalDateTime.now())) {
 			strategyDTO.setIsActive(false);
 			couponDTO.setStatus(CouponStatusEnum.INACTIVO);
-		} else if (strategyDTO.getEndDate().isBefore(today)) {
+		} else if (strategyDTO.getEndDate().isBefore(LocalDateTime.now())) {
 			strategyDTO.setIsActive(false);
 			couponDTO.setStatus(CouponStatusEnum.CADUCADO);
 		} else {
@@ -138,6 +137,7 @@ public class CouponFacade {
 
 	public CouponDTO editCoupon(CouponDTO updatedCoupon) {
 		Coupon coupon = couponMapper.toEntity(updatedCoupon);
+		validateCouponCreation(updatedCoupon);
 		return couponMapper.toDto(couponService.editCoupon(coupon));
 	}
 
@@ -150,7 +150,6 @@ public class CouponFacade {
 			Map<String, Object> strategyUpdates = (Map<String, Object>) updates.get("strategy");
 			updateStrategy(existingCoupon.getStrategy(), strategyUpdates);
 		}
-		editCoupon(existingCoupon);
 	}
 
 	private void updateStrategy(StrategyDTO existingStrategy, Map<String, Object> strategyUpdates) {
@@ -168,14 +167,26 @@ public class CouponFacade {
 				.ifPresent(existingStrategy::setMaxDiscount);
 		Optional.ofNullable((Integer) strategyUpdates.get("discountPercentage"))
 				.ifPresent(discountPercentage -> {
-					validateDiscountPercentage(discountPercentage);
+					// Validación del porcentaje de descuento
+					if (discountPercentage < 0 || discountPercentage > 100) {
+						throw new InvalidDiscountPercentage("El porcentaje de descuento debe estar entre 0 y 100");
+					}
 					existingStrategy.setDiscountPercentage(discountPercentage);
 				});
+		Optional.ofNullable((Integer) strategyUpdates.get("discountValue"))
+				.ifPresent(existingStrategy::setDiscountValue);
+		Optional.ofNullable((Integer) strategyUpdates.get("minValue")).ifPresent(existingStrategy::setMinValue);
+
+		// Validaciones después de la actualización
+		validateStrategy(existingStrategy);
 	}
 
-	private void validateDiscountPercentage(int discountPercentage) {
-		if (discountPercentage < 1 || discountPercentage > 50) {
-			throw new InvalidDiscountPercentage("El porcentaje de descuento debe estar entre 0 y 100");
-		}
+	private void validateStrategy(StrategyDTO strategyDTO) {
+		validateDiscount(strategyDTO.getDiscountPercentage(), strategyDTO.getDiscountValue());
+		validateDiscountConsistency(
+				strategyDTO.getDiscountPercentage(),
+				strategyDTO.getDiscountValue(),
+				strategyDTO.getMaxDiscount(),
+				strategyDTO.getMinValue());
 	}
 }
