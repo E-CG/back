@@ -14,6 +14,7 @@ import co.udea.ssmu.api.model.jpa.dto.StrategyDTO;
 import co.udea.ssmu.api.model.jpa.mapper.IStrategyMapper;
 import co.udea.ssmu.api.model.jpa.model.Strategy;
 import co.udea.ssmu.api.services.strategy.service.StrategyService;
+import co.udea.ssmu.api.utils.common.DiscountValidator;
 import co.udea.ssmu.api.utils.common.StrategyUserTypeEnum;
 import co.udea.ssmu.api.utils.exception.InconsistentDiscountException;
 import co.udea.ssmu.api.utils.exception.InvalidDiscountPercentage;
@@ -25,6 +26,9 @@ public class StrategyFacade {
 
     @Autowired
     private StrategyService strategyService;
+
+    @Autowired
+    private DiscountValidator discountValidator;
 
     @Autowired
     private IStrategyMapper strategyMapper;
@@ -101,6 +105,7 @@ public class StrategyFacade {
                     existingStrategy.setCity((String) value);
                     break;
                 case "discountValue":
+                    discountValidator.validateDiscount((int) value, existingStrategy.getDiscountPercentage());
                     existingStrategy.setDiscountValue((int) value);
                     break;
                 case "minValue":
@@ -109,11 +114,21 @@ public class StrategyFacade {
                 case "maxDiscount":
                     existingStrategy.setMaxDiscount((int) value);
                     break;
+                case "discountPercentage":
+                    discountValidator.validateDiscount((int) value, existingStrategy.getDiscountValue());
+                    existingStrategy.setDiscountPercentage((int) value);
+                    break;
                 case "userType":
                     existingStrategy.setUserType(mapToUserType((int) value));
                     break;
             }
         });
+        discountValidator.validateDiscountConsistency(
+                existingStrategy.getDiscountPercentage(),
+                existingStrategy.getDiscountValue(),
+                existingStrategy.getMaxDiscount(),
+                existingStrategy.getMinValue());
+
         editStrategy(existingStrategy);
     }
 

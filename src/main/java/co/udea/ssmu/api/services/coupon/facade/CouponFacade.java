@@ -18,10 +18,9 @@ import co.udea.ssmu.api.model.jpa.model.Coupon;
 import co.udea.ssmu.api.services.coupon.service.CouponService;
 import co.udea.ssmu.api.utils.common.CouponCodeBuilder;
 import co.udea.ssmu.api.utils.common.CouponStatusEnum;
+import co.udea.ssmu.api.utils.common.DiscountValidator;
 import co.udea.ssmu.api.utils.common.StrategyUserTypeEnum;
-import co.udea.ssmu.api.utils.exception.InconsistentDiscountException;
 import co.udea.ssmu.api.utils.exception.InvalidCouponAmount;
-import co.udea.ssmu.api.utils.exception.InvalidDiscountPercentage;
 
 import jakarta.transaction.Transactional;
 
@@ -34,6 +33,9 @@ public class CouponFacade {
 
 	@Autowired
 	private CouponCodeBuilder couponBuilder;
+
+	@Autowired
+	private DiscountValidator discountValidator;
 
 	@Autowired
 	private ICouponMapper couponMapper;
@@ -51,58 +53,14 @@ public class CouponFacade {
 		couponDTO.setCode(couponBuilder.buildCodeCoupon(strategyDTO.getName()));
 
 		validateCouponAmount(couponDTO.getAmountCreated());
-		validateDiscount(strategyDTO.getDiscountPercentage(), strategyDTO.getDiscountValue());
-		validateDiscountConsistency(strategyDTO.getDiscountPercentage(),
+		discountValidator.validateDiscount(strategyDTO.getDiscountPercentage(), strategyDTO.getDiscountValue());
+		discountValidator.validateDiscountConsistency(strategyDTO.getDiscountPercentage(),
 				strategyDTO.getDiscountValue(), strategyDTO.getMaxDiscount(), strategyDTO.getMinValue());
 	}
 
 	private void validateCouponAmount(int amountCreated) {
 		if (amountCreated < 1 || amountCreated > 100) {
 			throw new InvalidCouponAmount("La cantidad de cupones debe estar entre 1 y 100");
-		}
-	}
-
-	private void validateDiscount(int discountPercentage, Integer discountValue) {
-		if (discountPercentage < 0 || discountPercentage > 100) {
-			throw new InvalidDiscountPercentage("El porcentaje de descuento debe estar entre 0 y 100");
-		}
-	}
-
-	private void validateDiscountConsistency(int discountPercentage, Integer discountValue,
-			int maxDiscount, int minValue) {
-		if (discountPercentage == 0 && (discountValue == null || discountValue == 0)) {
-			throw new InconsistentDiscountException("Debe especificar al menos un tipo de descuento");
-		}
-
-		if ((discountPercentage > 0 && discountValue != null && discountValue != 0)
-				|| (discountPercentage == 0 && discountValue != null && discountValue < 0)) {
-			throw new InconsistentDiscountException(
-					"No se puede tener un porcentaje de descuento y un valor de descuento al mismo tiempo");
-		}
-
-		if (maxDiscount > 0 && discountPercentage <= 0) {
-			throw new InconsistentDiscountException(
-					"Si el descuento máximo es mayor que 0, el porcentaje de descuento debe ser mayor que 0");
-		}
-
-		if (maxDiscount > 0 && minValue > 0) {
-			throw new InconsistentDiscountException(
-					"Si el descuento máximo es mayor que 0, el valor mínimo debe ser 0");
-		}
-
-		if (maxDiscount == 0 && discountPercentage > 0) {
-			throw new InconsistentDiscountException(
-					"Si el descuento máximo es 0, el porcentaje de descuento debe ser 0");
-		}
-
-		if (minValue > 0 && (discountValue == null || discountValue == 0)) {
-			throw new InconsistentDiscountException(
-					"Si el valor mínimo es mayor que 0, el valor de descuento debe ser mayor que 0");
-		}
-
-		if (minValue > 0 && discountPercentage > 0) {
-			throw new InconsistentDiscountException(
-					"Si el valor mínimo es mayor que 0, el porcentaje de descuento debe ser 0");
 		}
 	}
 
@@ -167,10 +125,7 @@ public class CouponFacade {
 				.ifPresent(existingStrategy::setMaxDiscount);
 		Optional.ofNullable((Integer) strategyUpdates.get("discountPercentage"))
 				.ifPresent(discountPercentage -> {
-					// Validación del porcentaje de descuento
-					if (discountPercentage < 0 || discountPercentage > 100) {
-						throw new InvalidDiscountPercentage("El porcentaje de descuento debe estar entre 0 y 100");
-					}
+					discountValidator.validateDiscount(discountPercentage, existingStrategy.getDiscountValue());
 					existingStrategy.setDiscountPercentage(discountPercentage);
 				});
 		Optional.ofNullable((Integer) strategyUpdates.get("discountValue"))
@@ -178,15 +133,10 @@ public class CouponFacade {
 		Optional.ofNullable((Integer) strategyUpdates.get("minValue")).ifPresent(existingStrategy::setMinValue);
 
 		// Validaciones después de la actualización
-		validateStrategy(existingStrategy);
-	}
-
-	private void validateStrategy(StrategyDTO strategyDTO) {
-		validateDiscount(strategyDTO.getDiscountPercentage(), strategyDTO.getDiscountValue());
-		validateDiscountConsistency(
-				strategyDTO.getDiscountPercentage(),
-				strategyDTO.getDiscountValue(),
-				strategyDTO.getMaxDiscount(),
-				strategyDTO.getMinValue());
+		discountValidator.validateDiscountConsistency(
+				existingStrategy.getDiscountPercentage(),
+				existingStrategy.getDiscountValue(),
+				existingStrategy.getMaxDiscount(),
+				existingStrategy.getMinValue());
 	}
 }
