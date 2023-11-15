@@ -29,19 +29,21 @@ public class StrategyController {
     @Operation(summary = "Permite crear una estrategia")
     @PostMapping("/create")
     public ResponseEntity<StandardResponse<StrategyDTO>> createStrategy(@Valid @RequestBody StrategyDTO strategyDTO) {
-        StrategyDTO newStrategy = strategyFacade.createStrategy(strategyDTO);
         try {
+            StrategyDTO newStrategy = strategyFacade.createStrategy(strategyDTO);
             return ResponseEntity.ok(new StandardResponse<>(
                     StandardResponse.StatusStandardResponse.OK,
                     messages.get("strategy.save.successful"), newStrategy));
         } catch (DataDuplicatedException e) {
+            String errorMessage = "No se pudo crear la estrategia. " + e.getMessage();
             return ResponseEntity.status(HttpStatus.CONFLICT).body(new StandardResponse<>(
-                    messages.get("strategy.save.duplicate.code"),
-                    StandardResponse.StatusStandardResponse.ERROR));
+                    StandardResponse.StatusStandardResponse.ERROR,
+                    errorMessage));
         } catch (IllegalArgumentException e) {
+            String errorMessage = "No se pudo crear la estrategia. Datos inválidos. " + e.getMessage();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new StandardResponse<>(
-                    messages.get("strategy.save.data.invalid"),
-                    StandardResponse.StatusStandardResponse.ERROR));
+                    StandardResponse.StatusStandardResponse.ERROR,
+                    errorMessage));
         }
     }
 
@@ -55,9 +57,10 @@ public class StrategyController {
                     messages.get("strategy.get.successful"),
                     strategies));
         } catch (Exception e) {
+            String errorMessage = "Error al obtener las estrategias. " + e.getMessage();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new StandardResponse<>(
                     StandardResponse.StatusStandardResponse.ERROR,
-                    messages.get("strategy.get.error")));
+                    errorMessage));
         }
     }
 
@@ -66,9 +69,10 @@ public class StrategyController {
     public ResponseEntity<StandardResponse<StrategyDTO>> getStrategyById(@PathVariable Long id) {
         StrategyDTO strategyDTO = strategyFacade.findById(id);
         if (strategyDTO == null) {
+            String errorMessage = "No se encontró la estrategia con el ID: " + id;
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new StandardResponse<>(
                     StandardResponse.StatusStandardResponse.ERROR,
-                    messages.get("strategy.not.found")));
+                    errorMessage));
         }
 
         return ResponseEntity.ok(new StandardResponse<>(
@@ -82,10 +86,18 @@ public class StrategyController {
     public ResponseEntity<StandardResponse<Page<StrategyDTO>>> getStrategiesFiltered(
             @RequestParam(required = false) Integer limit) {
         Pageable pageable = PageRequest.ofSize(limit);
-        return ResponseEntity.ok(new StandardResponse<>(
-                StandardResponse.StatusStandardResponse.OK,
-                messages.get("strategy.get.successful"),
-                strategyFacade.findWithFilter(pageable)));
+        try {
+            Page<StrategyDTO> strategyPage = strategyFacade.findWithFilter(pageable);
+            return ResponseEntity.ok(new StandardResponse<>(
+                    StandardResponse.StatusStandardResponse.OK,
+                    messages.get("strategy.get.successful"),
+                    strategyPage));
+        } catch (Exception e) {
+            String errorMessage = "Error al obtener las estrategias filtradas. " + e.getMessage();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new StandardResponse<>(
+                    StandardResponse.StatusStandardResponse.ERROR,
+                    errorMessage));
+        }
     }
 
     @Operation(summary = "Permite actualizar los datos de una estrategia")
@@ -94,21 +106,24 @@ public class StrategyController {
             @RequestBody Map<String, Object> updates) {
         StrategyDTO existingStrategy = strategyFacade.findById(id);
         if (existingStrategy == null) {
+            String errorMessage = "No se encontró la estrategia con el ID: " + id;
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new StandardResponse<>(
                     StandardResponse.StatusStandardResponse.ERROR,
-                    messages.get("strategy.not.found")));
+                    errorMessage));
         }
 
         try {
             strategyFacade.updateStrategyFields(existingStrategy, updates);
         } catch (DataNotFoundException e) {
+            String errorMessage = "No se pudo actualizar la estrategia. " + e.getMessage();
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new StandardResponse<>(
                     StandardResponse.StatusStandardResponse.ERROR,
-                    messages.get("strategy.update.data.invalid")));
+                    errorMessage));
         } catch (Exception e) {
+            String errorMessage = "Error al actualizar la estrategia. " + e.getMessage();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new StandardResponse<>(
                     StandardResponse.StatusStandardResponse.ERROR,
-                    messages.get("strategy.update.error")));
+                    errorMessage));
         }
 
         return ResponseEntity.ok(new StandardResponse<>(

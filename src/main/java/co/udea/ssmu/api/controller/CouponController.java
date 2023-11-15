@@ -25,16 +25,17 @@ public class CouponController {
   @Operation(summary = "Permite crear un cupón")
   @PostMapping("/create")
   public ResponseEntity<StandardResponse<CouponDTO>> createCoupon(@Valid @RequestBody CouponDTO couponDTO) {
-    CouponDTO newCoupon = couponFacade.createCoupon(couponDTO);
     try {
+      CouponDTO newCoupon = couponFacade.createCoupon(couponDTO);
       return ResponseEntity.status(HttpStatus.ACCEPTED).body(new StandardResponse<>(
           StandardResponse.StatusStandardResponse.OK,
           messages.get("coupon.save.successful"),
           newCoupon));
     } catch (DataDuplicatedException e) {
+      String errorMessage = "No se pudo crear el cupón. " + e.getMessage();
       return ResponseEntity.status(HttpStatus.CONFLICT).body(new StandardResponse<>(
           StandardResponse.StatusStandardResponse.ERROR,
-          messages.get("coupon.save.duplicated")));
+          errorMessage));
     }
   }
 
@@ -87,21 +88,24 @@ public class CouponController {
       @RequestBody Map<String, Object> updates) {
     CouponDTO existingCoupon = couponFacade.findByCode(code);
     if (existingCoupon == null) {
+      String errorMessage = "No se encontró el cupón con el código: " + code;
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new StandardResponse<>(
           StandardResponse.StatusStandardResponse.ERROR,
-          messages.get("coupon.not.found")));
+          errorMessage));
     }
 
     try {
       couponFacade.updateCouponFields(existingCoupon, updates);
     } catch (DataNotFoundException e) {
+      String errorMessage = "No se pudo actualizar el cupón. " + e.getMessage();
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new StandardResponse<>(
           StandardResponse.StatusStandardResponse.ERROR,
-          messages.get("coupon.update.data.invalid")));
+          errorMessage));
     } catch (Exception e) {
+      String errorMessage = "Error al actualizar el cupón. Contacte al administrador.";
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new StandardResponse<>(
           StandardResponse.StatusStandardResponse.ERROR,
-          messages.get("coupon.update.error")));
+          errorMessage));
     }
 
     return ResponseEntity.ok(new StandardResponse<>(
