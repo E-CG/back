@@ -45,7 +45,7 @@ public class StrategyFacade {
     }
 
     private void validateDiscount(int discountPercentage, Integer discountValue) {
-        if (discountPercentage < 1 || discountPercentage > 100) {
+        if (discountPercentage < 0 || discountPercentage > 100) {
             throw new InvalidDiscountPercentage("El porcentaje de descuento debe estar entre 0 y 100");
         }
 
@@ -58,7 +58,7 @@ public class StrategyFacade {
 
     private void validateDateRange(LocalDateTime startDate, LocalDateTime endDate) {
         LocalDateTime today = LocalDateTime.now();
-        if (startDate.isAfter(today) || endDate.isBefore(today)) {
+        if (startDate.isAfter(today) && endDate.isBefore(today)) {
             throw new IllegalArgumentException("Las fechas de inicio y fin no son válidas");
         }
     }
@@ -138,6 +138,6 @@ public class StrategyFacade {
     }
 
     private StrategyUserTypeEnum mapToUserType(int userType) {
-        return userType == 0 ? StrategyUserTypeEnum.FRECUENTE : StrategyUserTypeEnum.OCACIONAL;
+        return userType == 0 ? StrategyUserTypeEnum.FRECUENTE : StrategyUserTypeEnum.OCASIONAL;
     }
 }

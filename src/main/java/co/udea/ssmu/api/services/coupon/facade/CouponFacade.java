@@ -112,25 +112,21 @@ public class CouponFacade {
 
 	private void updateStrategy(StrategyDTO existingStrategy, Map<String, Object> strategyUpdates) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		Optional.ofNullable((String) strategyUpdates.get("name")).ifPresent(existingStrategy::setName);
 		Optional.ofNullable((String) strategyUpdates.get("description"))
 				.ifPresent(existingStrategy::setDescription);
 		Optional.ofNullable((String) strategyUpdates.get("startDate"))
 				.map(date -> LocalDateTime.parse(date, formatter)).ifPresent(existingStrategy::setStartDate);
 		Optional.ofNullable((String) strategyUpdates.get("endDate"))
 				.map(date -> LocalDateTime.parse(date, formatter)).ifPresent(existingStrategy::setEndDate);
-		Optional.ofNullable((StrategyUserTypeEnum) strategyUpdates.get("userType"))
-				.ifPresent(existingStrategy::setUserType);
-		Optional.ofNullable((String) strategyUpdates.get("name")).ifPresent(existingStrategy::setName);
 		Optional.ofNullable((Integer) strategyUpdates.get("maxDiscount"))
 				.ifPresent(existingStrategy::setMaxDiscount);
 		Optional.ofNullable((Integer) strategyUpdates.get("discountPercentage"))
-				.ifPresent(discountPercentage -> {
-					discountValidator.validateDiscount(discountPercentage, existingStrategy.getDiscountValue());
-					existingStrategy.setDiscountPercentage(discountPercentage);
-				});
+				.ifPresent(existingStrategy::setDiscountPercentage);
 		Optional.ofNullable((Integer) strategyUpdates.get("discountValue"))
 				.ifPresent(existingStrategy::setDiscountValue);
 		Optional.ofNullable((Integer) strategyUpdates.get("minValue")).ifPresent(existingStrategy::setMinValue);
+		Optional.ofNullable((StrategyUserTypeEnum) strategyUpdates.get("userType")).ifPresent(existingStrategy::setUserType);
 
 		// Validaciones después de la actualización
 		discountValidator.validateDiscountConsistency(

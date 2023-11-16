@@ -3,7 +3,7 @@ package co.udea.ssmu.api.utils.common;
 public enum StrategyUserTypeEnum {
 
     FRECUENTE(0),
-    OCACIONAL(1);
+    OCASIONAL(1);
 
     private final int code;
 
