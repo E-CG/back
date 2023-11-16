@@ -35,8 +35,19 @@ public class StrategyFacade {
 
     public StrategyDTO createStrategy(StrategyDTO strategyDTO) {
         validateStrategy(strategyDTO);
+        updateStrategyStatus(strategyDTO);
         return strategyMapper.toDto(strategyService.saveStrategy(strategyMapper.toEntity(strategyDTO)));
     }
+
+    private void updateStrategyStatus(StrategyDTO strategyDTO) {
+		if (strategyDTO.getStartDate().isAfter(LocalDateTime.now())) {
+			strategyDTO.setIsActive(false);
+		} else if (strategyDTO.getEndDate().isBefore(LocalDateTime.now())) {
+			strategyDTO.setIsActive(false);
+		} else {
+			strategyDTO.setIsActive(true);
+		}
+	}
 
     private void validateStrategy(StrategyDTO strategyDTO) {
         validateDiscount(strategyDTO.getDiscountPercentage(), strategyDTO.getDiscountValue());
