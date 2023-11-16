@@ -15,6 +15,6 @@ public interface IStrategyRepository extends JpaRepository<Strategy, Long>{
     List<Strategy> findAllWithQueryParam(@Param("limit") int limit, @Param("offset") int offset);
 
     //Retornar todas las estrategias excluyendo las estrategias que están relacionadas con la tabla cupon
-    @Query(value = "SELECT s FROM Strategy s WHERE s.id NOT IN (SELECT c.idStrategy FROM Coupon c) ORDER BY s.name DESC")
+    @Query(value = "SELECT s FROM Strategy s WHERE s.id NOT IN (SELECT c.strategy FROM Coupon c) ORDER BY s.name DESC")
     List<Strategy> findAllStrategies();
 }
