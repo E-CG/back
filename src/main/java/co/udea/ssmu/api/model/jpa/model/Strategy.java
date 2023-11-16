@@ -22,7 +22,7 @@ public class Strategy implements Serializable {
     @Column(name = "nombre", nullable = false, length = 50)
     private String name;
 
-    @Column(name = "descripcion", nullable = false, length = 50)
+    @Column(name = "descripcion", nullable = false, length = 255)
     private String description;
 
     @Column(name = "porcentaje_descuento", nullable = false, length = 3)
