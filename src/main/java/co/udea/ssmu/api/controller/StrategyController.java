@@ -102,7 +102,7 @@ public class StrategyController {
 
   @Operation(summary = "Permite actualizar los datos de una estrategia")
   @PatchMapping("/edit/{id}")
-  public ResponseEntity<StandardResponse<Long>> editStrategy(@PathVariable Long id,
+  public ResponseEntity<StandardResponse<StrategyDTO>> editStrategy(@PathVariable Long id,
       @RequestBody Map<String, Object> updates) {
     StrategyDTO existingStrategy = strategyFacade.findById(id);
     if (existingStrategy == null) {
@@ -128,6 +128,7 @@ public class StrategyController {
 
     return ResponseEntity.ok(new StandardResponse<>(
         StandardResponse.StatusStandardResponse.OK,
-        messages.get("strategy.update.successful")));
+        messages.get("strategy.update.successful"),
+        existingStrategy));
   }
 }
