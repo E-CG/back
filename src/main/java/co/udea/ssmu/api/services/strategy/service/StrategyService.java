@@ -22,7 +22,7 @@ public class StrategyService {
     }
 
     public List<Strategy> findAll(){
-        return strategyRepository.findAll();
+        return strategyRepository.findAllStrategies();
     }
 
     public Page<Strategy> findWithFilter(Pageable pageable) {
