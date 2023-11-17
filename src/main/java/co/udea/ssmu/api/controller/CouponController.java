@@ -118,7 +118,7 @@ public class CouponController {
     CouponDTO existingCoupon = couponFacade.findByCode(code);
     try {
       // Llama al método en el facade para eliminar el cupón por su ID
-      couponFacade.deleteCoupon(code);
+      couponFacade.deleteCouponById(code);
       
       return ResponseEntity.ok(new StandardResponse<>(
           StandardResponse.StatusStandardResponse.OK,
