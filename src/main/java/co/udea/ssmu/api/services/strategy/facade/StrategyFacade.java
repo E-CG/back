@@ -40,14 +40,14 @@ public class StrategyFacade {
     }
 
     private void updateStrategyStatus(StrategyDTO strategyDTO) {
-		if (strategyDTO.getStartDate().isAfter(LocalDateTime.now())) {
-			strategyDTO.setIsActive(false);
-		} else if (strategyDTO.getEndDate().isBefore(LocalDateTime.now())) {
-			strategyDTO.setIsActive(false);
-		} else {
-			strategyDTO.setIsActive(true);
-		}
-	}
+        if (strategyDTO.getStartDate().isAfter(LocalDateTime.now())) {
+            strategyDTO.setIsActive(false);
+        } else if (strategyDTO.getEndDate().isBefore(LocalDateTime.now())) {
+            strategyDTO.setIsActive(false);
+        } else {
+            strategyDTO.setIsActive(true);
+        }
+    }
 
     private void validateStrategy(StrategyDTO strategyDTO) {
         validateDiscount(strategyDTO.getDiscountPercentage(), strategyDTO.getDiscountValue());
@@ -150,5 +150,14 @@ public class StrategyFacade {
 
     private StrategyUserTypeEnum mapToUserType(int userType) {
         return userType == 0 ? StrategyUserTypeEnum.FRECUENTE : StrategyUserTypeEnum.OCASIONAL;
+    }
+
+    public void deletePromoById(Long id) {
+        StrategyDTO strategyDTO = strategyMapper.toDto(strategyService.findById(id));
+        if (strategyDTO != null) {
+            strategyService.deleteStrategyById(id);
+        }else{
+            throw new IllegalArgumentException("La estrategia no existe");
+        }
     }
 }

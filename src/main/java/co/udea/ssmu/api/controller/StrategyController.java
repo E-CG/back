@@ -123,4 +123,26 @@ public class StrategyController {
         messages.get("strategy.update.successful"),
         existingStrategy));
   }
+
+  @Operation(summary = "Permite eliminar una estrategia")
+  @DeleteMapping("/delete/{id}")
+  public ResponseEntity<StandardResponse<StrategyDTO>> deletePromo(@PathVariable Long id) {
+    StrategyDTO existingStrategy = strategyFacade.findById(id);
+    try {
+      strategyFacade.deletePromoById(id);
+
+      return ResponseEntity.ok(new StandardResponse<>(
+          StandardResponse.StatusStandardResponse.OK,
+          messages.get("strategy.delete.successful"),
+          existingStrategy));
+    } catch (DataNotFoundException e) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new StandardResponse<>(
+          StandardResponse.StatusStandardResponse.ERROR,
+          messages.get("strategy.not.found")));
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new StandardResponse<>(
+          StandardResponse.StatusStandardResponse.ERROR,
+          messages.get("strategy.delete.error")));
+    }
+  }
 }

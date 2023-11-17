@@ -138,7 +138,7 @@ public class CouponFacade {
 				existingStrategy.getMinValue());
 	}
 
-	public void deleteCoupon(String code) {
+	public void deleteCouponById(String code) {
     CouponDTO couponDTO = couponMapper.toDto(couponService.findById(code));
 		
 		if (couponDTO != null) {

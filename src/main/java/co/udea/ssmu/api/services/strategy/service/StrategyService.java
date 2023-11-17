@@ -36,4 +36,11 @@ public class StrategyService {
     public Strategy findById(Long id){
         return strategyRepository.findById(id).orElse(null);
     }
+
+    public void deleteStrategyById(Long id) {
+        if (strategyRepository.hasCouponsByStrategyId(id)) {
+            throw new IllegalArgumentException("No se puede eliminar la estrategia porque está relacionada con cupones.");
+        }
+        strategyRepository.deletePromoById(id);
+    }
 }
