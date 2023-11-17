@@ -42,6 +42,8 @@ public class CouponFacade {
 	private ICouponMapper couponMapper;
 
 	public CouponDTO createCoupon(CouponDTO couponDTO) {
+		StrategyDTO strategyDTO = couponDTO.getStrategy();
+		couponDTO.setCode(couponBuilder.buildCodeCoupon(strategyDTO.getName()));
 		validateCouponCreation(couponDTO);
 		updateCouponStatus(couponDTO);
 		Coupon savedCoupon = couponService.saveCoupon(couponMapper.toEntity(couponDTO));
@@ -50,8 +52,6 @@ public class CouponFacade {
 
 	private void validateCouponCreation(CouponDTO couponDTO) {
 		StrategyDTO strategyDTO = couponDTO.getStrategy();
-
-		couponDTO.setCode(couponBuilder.buildCodeCoupon(strategyDTO.getName()));
 
 		validateCouponAmount(couponDTO.getAmountCreated());
 		discountValidator.validateDiscount(strategyDTO.getDiscountPercentage(), strategyDTO.getDiscountValue());
@@ -130,13 +130,6 @@ public class CouponFacade {
 		Optional.ofNullable((Integer) strategyUpdates.get("minValue")).ifPresent(existingStrategy::setMinValue);
 		Optional.ofNullable((StrategyUserTypeEnum) strategyUpdates.get("userType"))
 				.ifPresent(existingStrategy::setUserType);
-
-		// Validaciones después de la actualización
-		discountValidator.validateDiscountConsistency(
-				existingStrategy.getDiscountPercentage(),
-				existingStrategy.getDiscountValue(),
-				existingStrategy.getMaxDiscount(),
-				existingStrategy.getMinValue());
 	}
 
 	public void deleteCouponById(String code) {

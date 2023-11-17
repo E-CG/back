@@ -16,8 +16,6 @@ import co.udea.ssmu.api.model.jpa.model.Strategy;
 import co.udea.ssmu.api.services.strategy.service.StrategyService;
 import co.udea.ssmu.api.utils.common.DiscountValidator;
 import co.udea.ssmu.api.utils.common.StrategyUserTypeEnum;
-import co.udea.ssmu.api.utils.exception.InconsistentDiscountException;
-import co.udea.ssmu.api.utils.exception.InvalidDiscountPercentage;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -50,21 +48,9 @@ public class StrategyFacade {
     }
 
     private void validateStrategy(StrategyDTO strategyDTO) {
-        validateDiscount(strategyDTO.getDiscountPercentage(), strategyDTO.getDiscountValue());
+        discountValidator.validateDiscount(strategyDTO.getDiscountPercentage(), strategyDTO.getDiscountValue());
         validateDateRange(strategyDTO.getStartDate(), strategyDTO.getEndDate());
         validateUserType(strategyDTO.getUserType());
-    }
-
-    private void validateDiscount(int discountPercentage, Integer discountValue) {
-        if (discountPercentage < 0 || discountPercentage > 100) {
-            throw new InvalidDiscountPercentage("El porcentaje de descuento debe estar entre 0 y 100");
-        }
-
-        if ((discountPercentage > 0 && discountValue != null && discountValue != 0)
-                || (discountPercentage == 0 && discountValue != null && discountValue < 0)) {
-            throw new InconsistentDiscountException(
-                    "No se puede tener un porcentaje de descuento y un valor de descuento al mismo tiempo");
-        }
     }
 
     private void validateDateRange(LocalDateTime startDate, LocalDateTime endDate) {
@@ -116,24 +102,25 @@ public class StrategyFacade {
                     existingStrategy.setCity((String) value);
                     break;
                 case "discountValue":
-                    discountValidator.validateDiscount((int) value, existingStrategy.getDiscountPercentage());
-                    existingStrategy.setDiscountValue((int) value);
+                    existingStrategy.setDiscountValue((Integer) value);
                     break;
                 case "minValue":
-                    existingStrategy.setMinValue((int) value);
+                    existingStrategy.setMinValue((Integer) value);
                     break;
                 case "maxDiscount":
-                    existingStrategy.setMaxDiscount((int) value);
+                    existingStrategy.setMaxDiscount((Integer) value);
                     break;
                 case "discountPercentage":
-                    discountValidator.validateDiscount((int) value, existingStrategy.getDiscountValue());
-                    existingStrategy.setDiscountPercentage((int) value);
+                    existingStrategy.setDiscountPercentage((Integer) value);
                     break;
                 case "userType":
-                    existingStrategy.setUserType(mapToUserType((int) value));
+                    existingStrategy.setUserType(mapToUserType((Integer) value));
                     break;
             }
         });
+        discountValidator.validateDiscount(existingStrategy.getDiscountPercentage(),
+                existingStrategy.getDiscountValue());
+
         discountValidator.validateDiscountConsistency(
                 existingStrategy.getDiscountPercentage(),
                 existingStrategy.getDiscountValue(),
@@ -148,7 +135,7 @@ public class StrategyFacade {
         return LocalDateTime.parse(dateTime, formatter);
     }
 
-    private StrategyUserTypeEnum mapToUserType(int userType) {
+    private StrategyUserTypeEnum mapToUserType(Integer userType) {
         return userType == 0 ? StrategyUserTypeEnum.FRECUENTE : StrategyUserTypeEnum.OCASIONAL;
     }
 
@@ -156,7 +143,7 @@ public class StrategyFacade {
         StrategyDTO strategyDTO = strategyMapper.toDto(strategyService.findById(id));
         if (strategyDTO != null) {
             strategyService.deleteStrategyById(id);
-        }else{
+        } else {
             throw new IllegalArgumentException("La estrategia no existe");
         }
     }
