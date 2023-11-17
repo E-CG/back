@@ -20,6 +20,7 @@ import co.udea.ssmu.api.utils.common.CouponCodeBuilder;
 import co.udea.ssmu.api.utils.common.CouponStatusEnum;
 import co.udea.ssmu.api.utils.common.DiscountValidator;
 import co.udea.ssmu.api.utils.common.StrategyUserTypeEnum;
+import co.udea.ssmu.api.utils.exception.DataNotFoundException;
 import co.udea.ssmu.api.utils.exception.InvalidCouponAmount;
 
 import jakarta.transaction.Transactional;
@@ -126,7 +127,8 @@ public class CouponFacade {
 		Optional.ofNullable((Integer) strategyUpdates.get("discountValue"))
 				.ifPresent(existingStrategy::setDiscountValue);
 		Optional.ofNullable((Integer) strategyUpdates.get("minValue")).ifPresent(existingStrategy::setMinValue);
-		Optional.ofNullable((StrategyUserTypeEnum) strategyUpdates.get("userType")).ifPresent(existingStrategy::setUserType);
+		Optional.ofNullable((StrategyUserTypeEnum) strategyUpdates.get("userType"))
+				.ifPresent(existingStrategy::setUserType);
 
 		// Validaciones después de la actualización
 		discountValidator.validateDiscountConsistency(
@@ -135,4 +137,16 @@ public class CouponFacade {
 				existingStrategy.getMaxDiscount(),
 				existingStrategy.getMinValue());
 	}
+
+	public void deleteCoupon(String code) {
+    CouponDTO couponDTO = couponMapper.toDto(couponService.findById(code));
+		
+		if (couponDTO != null) {
+			couponService.deleteCoupon(couponMapper.toEntity(couponDTO));
+			// Devuelve el cupón eliminado
+		} else {
+				throw new DataNotFoundException("No fue encontrado el cupón con código: " + code);
+		}
+  }
+
 }

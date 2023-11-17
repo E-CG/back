@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import co.udea.ssmu.api.model.jpa.model.Coupon;
 import co.udea.ssmu.api.model.jpa.repository.coupon.ICouponRepository;
 
@@ -34,5 +35,9 @@ public class CouponService {
 
     public Coupon findById(String code) {
         return couponRepository.findById(code).orElse(null);
+    }
+
+    public void deleteCoupon(Coupon coupon) {
+        couponRepository.delete(coupon);
     }
 }

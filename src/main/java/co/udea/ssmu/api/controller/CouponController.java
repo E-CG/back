@@ -88,29 +88,50 @@ public class CouponController {
       @RequestBody Map<String, Object> updates) {
     CouponDTO existingCoupon = couponFacade.findByCode(code);
     if (existingCoupon == null) {
-      String errorMessage = "No se encontró el cupón con el código: " + code;
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new StandardResponse<>(
           StandardResponse.StatusStandardResponse.ERROR,
-          errorMessage, null));
+          messages.get("coupon.not.found"), null));
     }
 
     try {
       couponFacade.updateCouponFields(existingCoupon, updates);
     } catch (DataNotFoundException e) {
-      String errorMessage = "No se pudo actualizar el cupón. " + e.getMessage();
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new StandardResponse<>(
           StandardResponse.StatusStandardResponse.ERROR,
-          errorMessage));
+          messages.get("coupon.not.found")));
     } catch (Exception e) {
-      String errorMessage = "Error al actualizar el cupón. Contacte al administrador.";
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new StandardResponse<>(
           StandardResponse.StatusStandardResponse.ERROR,
-          errorMessage));
+          messages.get("coupon.update.error")));
     }
 
     return ResponseEntity.ok(new StandardResponse<>(
         StandardResponse.StatusStandardResponse.OK,
         messages.get("coupon.update.successful"), 
         existingCoupon));
+  }
+
+  @Operation(summary = "Permite eliminar un cupón por su código")
+  @DeleteMapping("/delete/{code}")
+  public ResponseEntity<StandardResponse<CouponDTO>> deleteCouponById(@PathVariable String code) {
+    // Busca el cupón por su codigo
+    CouponDTO existingCoupon = couponFacade.findByCode(code);
+    try {
+      // Llama al método en el facade para eliminar el cupón por su ID
+      couponFacade.deleteCoupon(code);
+      
+      return ResponseEntity.ok(new StandardResponse<>(
+          StandardResponse.StatusStandardResponse.OK,
+          messages.get("coupon.delete.successful"),
+          existingCoupon));
+    } catch (DataNotFoundException e) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new StandardResponse<>(
+          StandardResponse.StatusStandardResponse.ERROR,
+          messages.get("coupon.not.found")));
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new StandardResponse<>(
+          StandardResponse.StatusStandardResponse.ERROR,
+          messages.get("coupon.delete.error")));
+    }
   }
 }
