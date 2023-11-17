@@ -109,6 +109,7 @@ public class CouponFacade {
 			Map<String, Object> strategyUpdates = (Map<String, Object>) updates.get("strategy");
 			updateStrategy(existingCoupon.getStrategy(), strategyUpdates);
 		}
+		editCoupon(existingCoupon);
 	}
 
 	private void updateStrategy(StrategyDTO existingStrategy, Map<String, Object> strategyUpdates) {
