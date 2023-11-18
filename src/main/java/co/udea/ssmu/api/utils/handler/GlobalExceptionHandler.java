@@ -64,4 +64,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                         "No se ha podido procesar su solicitud. Contacte al administrador."),
                 HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler(InvalidDate.class)
+    protected ResponseEntity<?> handleInvalidDate(InvalidDate ex) {
+        return new ResponseEntity<>(
+                new StandardResponse<>(
+                        StandardResponse.StatusStandardResponse.ERROR,
+                        ex.getMessage()),
+                HttpStatus.BAD_REQUEST);
+    }
 }

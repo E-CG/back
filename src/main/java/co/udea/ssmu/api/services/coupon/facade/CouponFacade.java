@@ -22,7 +22,7 @@ import co.udea.ssmu.api.utils.common.DiscountValidator;
 import co.udea.ssmu.api.utils.common.StrategyUserTypeEnum;
 import co.udea.ssmu.api.utils.exception.DataNotFoundException;
 import co.udea.ssmu.api.utils.exception.InvalidCouponAmount;
-
+import co.udea.ssmu.api.utils.exception.InvalidDate;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -57,6 +57,10 @@ public class CouponFacade {
 		discountValidator.validateDiscount(strategyDTO.getDiscountPercentage(), strategyDTO.getDiscountValue());
 		discountValidator.validateDiscountConsistency(strategyDTO.getDiscountPercentage(),
 				strategyDTO.getDiscountValue(), strategyDTO.getMaxDiscount(), strategyDTO.getMinValue());
+
+		if (strategyDTO.getStartDate().isAfter(strategyDTO.getEndDate())) {
+			throw new InvalidDate("La fecha de inicio no puede ser posterior a la fecha de finalización.");
+		}
 	}
 
 	private void validateCouponAmount(int amountCreated) {
@@ -133,14 +137,14 @@ public class CouponFacade {
 	}
 
 	public void deleteCouponById(String code) {
-    CouponDTO couponDTO = couponMapper.toDto(couponService.findById(code));
-		
+		CouponDTO couponDTO = couponMapper.toDto(couponService.findById(code));
+
 		if (couponDTO != null) {
 			couponService.deleteCoupon(couponMapper.toEntity(couponDTO));
 			// Devuelve el cupón eliminado
 		} else {
-				throw new DataNotFoundException("No fue encontrado el cupón con código: " + code);
+			throw new DataNotFoundException("No fue encontrado el cupón con código: " + code);
 		}
-  }
+	}
 
 }

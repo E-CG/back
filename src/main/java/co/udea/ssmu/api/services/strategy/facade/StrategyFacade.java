@@ -16,6 +16,7 @@ import co.udea.ssmu.api.model.jpa.model.Strategy;
 import co.udea.ssmu.api.services.strategy.service.StrategyService;
 import co.udea.ssmu.api.utils.common.DiscountValidator;
 import co.udea.ssmu.api.utils.common.StrategyUserTypeEnum;
+import co.udea.ssmu.api.utils.exception.InvalidDate;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -58,6 +59,9 @@ public class StrategyFacade {
         if (startDate.isAfter(today) && endDate.isBefore(today)) {
             throw new IllegalArgumentException("Las fechas de inicio y fin no son válidas");
         }
+        if (startDate.isAfter(endDate)) {
+			throw new InvalidDate("La fecha de inicio no puede ser posterior a la fecha de finalización.");
+		}
     }
 
     private void validateUserType(StrategyUserTypeEnum userType) {
