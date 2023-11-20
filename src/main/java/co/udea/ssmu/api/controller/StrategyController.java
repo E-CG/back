@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.*;
+import io.swagger.annotations.*;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -27,6 +28,11 @@ public class StrategyController {
   private Messages messages;
 
   @Operation(summary = "Permite crear una estrategia")
+  @ApiResponses(value = {
+    @ApiResponse(code = 201, message = "Estrategia creada exitosamente"),
+    @ApiResponse(code = 400, message = "Parámetros de entrada inválidos"),
+    @ApiResponse(code = 409, message = "Conflicto: La estrategia ya existe")
+})
   @PostMapping("/create")
   public ResponseEntity<StandardResponse<StrategyDTO>> createStrategy(@Valid @RequestBody StrategyDTO strategyDTO) {
     try {
@@ -46,6 +52,12 @@ public class StrategyController {
   }
 
   @Operation(summary = "Permite obtener todas las estrategias")
+  @ApiResponses(value = {
+    @ApiResponse(code = 200, message = "Listado de estrategias"),
+    @ApiResponse(code = 401, message = "No estás autorizado para ver el recurso"),
+    @ApiResponse(code = 403, message = "Acceso prohibido"),
+    @ApiResponse(code = 404, message = "Estrategia no encontrada ")
+})
   @GetMapping("/all")
   public ResponseEntity<StandardResponse<List<StrategyDTO>>> getAllStrategies() {
     try {
@@ -62,6 +74,11 @@ public class StrategyController {
   }
 
   @Operation(summary = "Permite obtener una estrategia por su id")
+  @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Estrategia encontrada"),
+            @ApiResponse(code = 400, message = "Parámetros de entrada inválidos"),
+            @ApiResponse(code = 404, message = "Estrategia no encontrada")
+    })
   @GetMapping("/{id}")
   public ResponseEntity<StandardResponse<StrategyDTO>> getStrategyById(@PathVariable Long id) {
     StrategyDTO strategyDTO = strategyFacade.findById(id);
@@ -78,6 +95,12 @@ public class StrategyController {
   }
 
   @Operation(summary = "Permite obtener todas las estrategias")
+  @ApiResponses(value = {
+    @ApiResponse(code = 200, message = "Listado de estrategias"),
+    @ApiResponse(code = 401, message = "No estás autorizado para ver el recurso"),
+    @ApiResponse(code = 403, message = "Acceso prohibido"),
+    @ApiResponse(code = 404, message = "Estrategia no encontrada ")
+})
   @GetMapping("/all-filter")
   public ResponseEntity<StandardResponse<Page<StrategyDTO>>> getStrategiesFiltered(
       @RequestParam(required = false) Integer limit) {
@@ -96,6 +119,12 @@ public class StrategyController {
   }
 
   @Operation(summary = "Permite actualizar los datos de una estrategia")
+  @ApiResponses(value = {
+    @ApiResponse(code = 200, message = "Estrategia actualizada exitosamente"),
+    @ApiResponse(code = 404, message = "Estrategia no encontrada"),
+    @ApiResponse(code = 400, message = "Parámetros de entrada inválidos"),
+    @ApiResponse(code = 500, message = "Error interno del servidor")
+})
   @PatchMapping("/edit/{id}")
   public ResponseEntity<StandardResponse<StrategyDTO>> editStrategy(@PathVariable Long id,
       @RequestBody Map<String, Object> updates) {
@@ -125,6 +154,11 @@ public class StrategyController {
   }
 
   @Operation(summary = "Permite eliminar una estrategia")
+  @ApiResponses(value = {
+    @ApiResponse(code = 200, message = "Estrategia eliminada exitosamente"),
+    @ApiResponse(code = 404, message = "Estrategia no encontrada"),
+    @ApiResponse(code = 500, message = "Error interno del servidor")
+})
   @DeleteMapping("/delete/{id}")
   public ResponseEntity<StandardResponse<StrategyDTO>> deletePromo(@PathVariable Long id) {
     StrategyDTO existingStrategy = strategyFacade.findById(id);
