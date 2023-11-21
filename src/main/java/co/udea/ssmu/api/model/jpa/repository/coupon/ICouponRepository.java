@@ -9,12 +9,10 @@ import co.udea.ssmu.api.model.jpa.model.Coupon;
 
 @Repository
 public interface ICouponRepository extends JpaRepository<Coupon, String> {
-    /*
-     * //Cuenta la cantidad de cupones activos
-     * 
-     * @Query("SELECT COUNT(c) FROM Coupon c WHERE c.status = Activo")
-     * long countActiveCoupons();
-     */
+    
+    //Cuenta la cantidad de cupones activos
+    /* @Query("SELECT COUNT(c) FROM Coupon c WHERE c.status = Activo")
+    long countActiveCoupons(); */
 
     // Obtiene los cupones con los parametros limit y offset, ordenados por cantidad disponible
     @Query(value = "SELECT c FROM Coupon c ORDER BY c.amountAvalaible DESC")

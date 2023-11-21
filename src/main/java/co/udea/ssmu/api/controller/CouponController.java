@@ -25,10 +25,10 @@ public class CouponController {
 
   @Operation(summary = "Permite crear un cupón")
   @ApiResponses(value = {
-    @ApiResponse(code = 201, message = "Cupón creada exitosamente"),
-    @ApiResponse(code = 400, message = "Parámetros de entrada inválidos"),
-    @ApiResponse(code = 409, message = "Conflicto: El cupón ya existe")
-})
+      @ApiResponse(code = 201, message = "Cupón creada exitosamente"),
+      @ApiResponse(code = 400, message = "Parámetros de entrada inválidos"),
+      @ApiResponse(code = 409, message = "Conflicto: El cupón ya existe")
+  })
   @PostMapping("/create")
   public ResponseEntity<StandardResponse<CouponDTO>> createCoupon(@Valid @RequestBody CouponDTO couponDTO) {
     try {
@@ -47,11 +47,11 @@ public class CouponController {
 
   @Operation(summary = "Permite obtener todos los cupones")
   @ApiResponses(value = {
-    @ApiResponse(code = 200, message = "Listado de cupones"),
-    @ApiResponse(code = 401, message = "No estás autorizado para ver el recurso"),
-    @ApiResponse(code = 403, message = "Acceso prohibido"),
-    @ApiResponse(code = 404, message = "Cupón no encontrado ")
-})
+      @ApiResponse(code = 200, message = "Listado de cupones"),
+      @ApiResponse(code = 401, message = "No estás autorizado para ver el recurso"),
+      @ApiResponse(code = 403, message = "Acceso prohibido"),
+      @ApiResponse(code = 404, message = "Cupón no encontrado ")
+  })
   @GetMapping("/all")
   public ResponseEntity<StandardResponse<List<CouponDTO>>> getAllCoupons() {
     try {
@@ -69,10 +69,10 @@ public class CouponController {
 
   @Operation(summary = "Permite obtener un cupón por su código")
   @ApiResponses(value = {
-    @ApiResponse(code = 200, message = "Cupón encontrado"),
-    @ApiResponse(code = 400, message = "Parámetros de entrada inválidos"),
-    @ApiResponse(code = 404, message = "Cupón no encontrado")
-})
+      @ApiResponse(code = 200, message = "Cupón encontrado"),
+      @ApiResponse(code = 400, message = "Parámetros de entrada inválidos"),
+      @ApiResponse(code = 404, message = "Cupón no encontrado")
+  })
   @GetMapping("/{code}")
   public ResponseEntity<StandardResponse<CouponDTO>> getCouponByCode(@PathVariable String code) {
     CouponDTO couponDTO = couponFacade.findByCode(code);
@@ -90,11 +90,11 @@ public class CouponController {
 
   @Operation(summary = "Permite obtener todos los cupones")
   @ApiResponses(value = {
-    @ApiResponse(code = 200, message = "Listado de cupones"),
-    @ApiResponse(code = 401, message = "No estás autorizado para ver el recurso"),
-    @ApiResponse(code = 403, message = "Acceso prohibido"),
-    @ApiResponse(code = 404, message = "Cupón no encontrado ")
-})
+      @ApiResponse(code = 200, message = "Listado de cupones"),
+      @ApiResponse(code = 401, message = "No estás autorizado para ver el recurso"),
+      @ApiResponse(code = 403, message = "Acceso prohibido"),
+      @ApiResponse(code = 404, message = "Cupón no encontrado ")
+  })
   @GetMapping("/all-filter")
   public ResponseEntity<StandardResponse<Page<CouponDTO>>> getCouponsFiltered(
       @RequestParam(required = false) Integer limit) {
@@ -107,11 +107,11 @@ public class CouponController {
 
   @Operation(summary = "Permite actualizar los datos de un cupón")
   @ApiResponses(value = {
-    @ApiResponse(code = 200, message = "Cupón actualizado exitosamente"),
-    @ApiResponse(code = 404, message = "Cupón no encontrado"),
-    @ApiResponse(code = 400, message = "Parámetros de entrada inválidos"),
-    @ApiResponse(code = 500, message = "Error interno del servidor")
-})
+      @ApiResponse(code = 200, message = "Cupón actualizado exitosamente"),
+      @ApiResponse(code = 404, message = "Cupón no encontrado"),
+      @ApiResponse(code = 400, message = "Parámetros de entrada inválidos"),
+      @ApiResponse(code = 500, message = "Error interno del servidor")
+  })
   @PatchMapping("/edit/{code}")
   public ResponseEntity<StandardResponse<CouponDTO>> editCoupon(@PathVariable String code,
       @RequestBody Map<String, Object> updates) {
@@ -136,16 +136,16 @@ public class CouponController {
 
     return ResponseEntity.ok(new StandardResponse<>(
         StandardResponse.StatusStandardResponse.OK,
-        messages.get("coupon.update.successful"), 
+        messages.get("coupon.update.successful"),
         existingCoupon));
   }
 
   @Operation(summary = "Permite eliminar un cupón por su código")
   @ApiResponses(value = {
-    @ApiResponse(code = 200, message = "Cupón eliminado exitosamente"),
-    @ApiResponse(code = 404, message = "Cupón no encontrado"),
-    @ApiResponse(code = 500, message = "Error interno del servidor")
-})
+      @ApiResponse(code = 200, message = "Cupón eliminado exitosamente"),
+      @ApiResponse(code = 404, message = "Cupón no encontrado"),
+      @ApiResponse(code = 500, message = "Error interno del servidor")
+  })
   @DeleteMapping("/delete/{code}")
   public ResponseEntity<StandardResponse<CouponDTO>> deleteCouponById(@PathVariable String code) {
     // Busca el cupón por su codigo
@@ -153,7 +153,7 @@ public class CouponController {
     try {
       // Llama al método en el facade para eliminar el cupón por su ID
       couponFacade.deleteCouponById(code);
-      
+
       return ResponseEntity.ok(new StandardResponse<>(
           StandardResponse.StatusStandardResponse.OK,
           messages.get("coupon.delete.successful"),

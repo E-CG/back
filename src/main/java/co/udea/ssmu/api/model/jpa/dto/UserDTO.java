@@ -1,6 +1,5 @@
 package co.udea.ssmu.api.model.jpa.dto;
 
-import java.util.List;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,6 +18,4 @@ public class UserDTO {
 
     @NotNull
     private String clasificacion;
-
-    private List<StrategyDTO> strategies;
 }

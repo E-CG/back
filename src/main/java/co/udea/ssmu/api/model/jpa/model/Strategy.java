@@ -2,7 +2,6 @@ package co.udea.ssmu.api.model.jpa.model;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.List;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -51,8 +50,4 @@ public class Strategy implements Serializable {
 
     @Column(name = "tipo_usuario", nullable = false, length = 20)
     private String userType;
-
-    @ManyToMany(mappedBy = "strategies")
-    private List<User> users;
-
 }

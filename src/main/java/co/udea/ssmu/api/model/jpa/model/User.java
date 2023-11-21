@@ -1,7 +1,6 @@
 package co.udea.ssmu.api.model.jpa.model;
 
 import java.io.Serializable;
-import java.util.List;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,13 +25,4 @@ public class User implements Serializable{
     
     @Column(name = "clasificacion")
     private @NonNull String userType;
-
-    @ManyToMany
-    @JoinTable(
-        name = "estrategia_usuario",
-        joinColumns = @JoinColumn(name = "cedula"),
-        inverseJoinColumns = @JoinColumn(name = "id_estrategia")
-    )
-    private List<Strategy> strategies;
-    // Al usuario se le aplica la lista de estrategias
 }
